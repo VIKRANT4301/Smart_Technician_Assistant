@@ -1,0 +1,24 @@
+=== SMART TV REPAIR GUIDE: MODEL VIVID-4K ===
+SYSTEM SPECIFICATIONS:
+- Backlight Voltage Output: 120V - 180V DC
+- T-CON Input Voltage: 12V DC
+- Fuse Rating: 3.15A 250V (Power Board)
+- Manufacturer: LG
+
+TROUBLESHOOTING GUIDE – ELECTRICAL BOARD FAULTS:
+Symptom: TV power LED flashes red, no screen response, clicking noise from internal relay.
+Possible Causes:
+1. Failed Power Supply Capacitors: Bulging or leaking capacitors prevent stable voltage output.
+2. Shorted LED Backlight Strips: Short circuit on LED diodes triggers over-current protection.
+3. Logic Board Corrupt Firmware: Failed boot cycle blocks main processor initiation.
+
+RESOLUTION STEPS:
+1. Safe Shutdown: Unplug the TV power cord from the electrical socket and wait 5 minutes to allow capacitors to discharge.
+2. Back Cover Removal: Lay the TV screen-down on a soft, padded surface. Remove all perimeter screws to lift the back cover.
+3. Power Board Inspection: Visually inspect for bulging electrolytic capacitors. Desolder any swollen capacitors and replace with matched rating low-ESR capacitors.
+4. Backlight Power Output Test: Disconnect the backlight connector from the power board. Power on the TV and measure output voltage. If voltage spikes and drops, the power board is good; the issue is shorted LED strips inside.
+5. Mainboard Replacement: If power board voltages are stable but TV does not respond to remote or button controls, unscrew and replace the logic mainboard.
+
+PREVENTIVE MAINTENANCE:
+- Use a high-quality surge protector for power input.
+- Keep cooling vents clear of dust.

@@ -1,0 +1,24 @@
+=== LAPTOP REPAIR GUIDE: MODEL LT-PRO X15 ===
+SYSTEM SPECIFICATIONS:
+- Fan Speed Range: 2000 RPM - 5500 RPM
+- Heat Pipe Count: 3 copper tubes
+- Battery Voltage Rating: 11.4V DC
+- Manufacturer: ASUS
+
+TROUBLESHOOTING GUIDE – THERMAL & FAN FAULTS:
+Symptom: Cooling fan makes grinding noises, drops RPM under load, CPU temperature thermal throttles.
+Possible Causes:
+1. Dust Clogged Heat Pipe Fins: Accumulation blockages at the heatsink exit ports.
+2. Dried Thermal Compound: Hardened CPU/GPU thermal grease.
+3. Fan Bearing Wear: Lost lubrication in the fan spindle sleeve.
+
+RESOLUTION STEPS:
+1. Safe Shutdown: Shut down the laptop, disconnect the charger, unscrew the bottom chassis cover, and immediately disconnect the battery cable.
+2. Heatsink Module Disassembly: Remove the heatsink mounting screws in reverse numeric order (4-3-2-1). Lift the heatsink from CPU and GPU.
+3. Thermal Compound Refresh: Clean the chip dies and heatsink plate using isopropyl alcohol and lint-free wipes. Apply a thin layer of thermal compound (non-conductive) evenly.
+4. Fan Replacements: Unscrew the dual fan modules, unplug their ribbon connectors from the motherboard, and install new replacement fans.
+5. Reassembly and Test: Reattach the heatsink, tighten screws in order (1-2-3-4), reconnect the battery cable, close the cover, and run a thermal diagnostic stress test.
+
+PREVENTIVE MAINTENANCE:
+- Clean fan dust using compressed air quarterly.
+- Avoid blockages by keeping laptop on solid tables during high CPU workloads.

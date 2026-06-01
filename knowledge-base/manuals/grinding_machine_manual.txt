@@ -1,0 +1,27 @@
+=== GRINDING MACHINE MANUAL: MODEL GM-PRO300 ===
+SYSTEM SPECIFICATIONS:
+- Operating Temperature: 50°F to 110°F
+- Spindle Thread: 5/8"-11 UNC
+- Wheel Diameter: 7 inches
+- Rated Power: 15A / 120V
+- No-Load Speed: 6000 RPM
+
+TROUBLESHOOTING GUIDE – WHEEL VIBRATION & OVERHEATING:
+Symptom: High vibration during grinding operations, or surface motor casing overheating.
+Possible Causes:
+1. Cracked or Damaged Wheel: Structural cracks in the abrasive wheel create massive unbalance.
+2. Loose Mounting Flange: Spindle nut not torqued down, causing wheel slippage and vibration.
+3. Worn Motor Brushes: Worn-out carbon brushes cause electrical arcing and motor casing overheating.
+
+RESOLUTION STEPS:
+1. Safe Isolation: Power off the grinding machine. Disconnect from mains outlet and isolate the plug inside a lockbox following LOTO.
+2. Guard check: Inspect safety guard position. Ensure guard is secured and covers at least 180 degrees of the wheel.
+3. Flange check: Check spindle nut and flange torque. Tighten spindle nut using the dual-pin spanner wrench.
+4. Wheel Replacement: Replace grinding wheel if hairline cracks or chipping is visible. Do NOT exceed max speed rated for the wheel.
+5. Brush Replacement: Unscrew carbon brush caps, slide out old carbon brushes, insert new brushes, and secure caps.
+6. Spindle Inspection: Check spindle shaft using a dial indicator. Runout should be less than 0.05 mm.
+
+PREVENTIVE MAINTENANCE:
+- Check safety guard alignment before every shift.
+- Blow out motor casing with dry compressed air weekly to remove metal dust.
+- Inspect power cord for cuts or exposed wires.

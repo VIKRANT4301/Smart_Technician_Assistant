@@ -1,0 +1,25 @@
+=== SMART TV SERVICE MANUAL: MODEL VIVID-4K ===
+SYSTEM SPECIFICATIONS:
+- Panel Size: 55" LED Backlight UHD
+- Power Supply Rating: 100V - 240V AC
+- Audio Output: 20W Dolby Atmos
+- Backlight Type: Direct LED
+- Manufacturer: LG
+
+TROUBLESHOOTING GUIDE – NO IMAGE / BLACK SCREEN:
+Symptom: Power LED indicator flashes, sound works, but screen displays no image (black screen).
+Possible Causes:
+1. Failed LED Backlight Strips: Burned out LED segments inside the panel disable the backlight.
+2. Blown T-CON Board Fuse: Short circuit on the timing controller board shuts down panel power.
+3. Loose LVDS/Ribbon Cables: Unsecured connections between the mainboard and the display panel.
+
+RESOLUTION STEPS:
+1. Safe Shutdown: Unplug the TV power cord from the electrical socket and wait 5 minutes to allow capacitors to discharge.
+2. Flashlight Test: Shine a flashlight close to the screen while playing video. If faint images are visible, the LED backlight circuit is faulty.
+3. Backlight Strips Replacement: Disassemble the screen panel carefully, test individual LED strips with a backlight tester, and replace damaged strips.
+4. Timing Controller (T-CON) Check: Measure input voltage on the T-CON board fuse. If the fuse is blown, replace the T-CON board.
+5. Ribbon Cable Re-seating: Disconnect, clean with contact cleaner, and firmly re-seat all internal LVDS ribbon cables.
+
+SAFETY MANDATES:
+- High voltage warning: Never touch the power supply board components when the TV is plugged in.
+- Wear anti-static ESD wrist straps when handling sensitive logic boards.

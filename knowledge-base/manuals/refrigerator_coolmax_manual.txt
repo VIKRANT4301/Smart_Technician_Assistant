@@ -1,0 +1,25 @@
+=== REFRIGERATOR SERVICE MANUAL: MODEL COOLMAX-R10 ===
+SYSTEM SPECIFICATIONS:
+- Compartment Temperature: 34°F to 38°F
+- Freezer Temperature: -2°F to 2°F
+- Compressor Type: Variable Speed Inverter
+- Refrigerant Type: R-600a
+- Manufacturer: Whirlpool
+
+TROUBLESHOOTING GUIDE – INADEQUATE COOLING:
+Symptom: Refrigerator compartment temperature exceeds 45°F, compressor runs constantly or clicks.
+Possible Causes:
+1. Dirty Condenser Coils: Dust accumulation on under-unit coils prevents proper heat rejection, resulting in compressor overload.
+2. Faulty Defrost Thermostat: Frost builds up on evaporator coils, blocking cold airflow.
+3. Damaged Door Gasket: Worn or torn magnetic seal allows warm ambient air to leak inside.
+
+RESOLUTION STEPS:
+1. Safe Shutdown: Unplug the refrigerator power cord from the wall outlet before starting service.
+2. Coil Cleaning: Use a condenser coil brush and vacuum cleaner to remove dust and pet hair from under-unit coils.
+3. Defrost System Check: Use a multimeter to test continuity of the defrost heater and defrost thermostat. Replace faulty parts.
+4. Gasket Inspection: Check the magnetic door gasket for tears or air leaks. Clean the gasket with warm water or replace if damaged.
+5. Air Vent Clearing: Ensure internal air vents between freezer and refrigerator sections are not blocked by food packages.
+
+SAFETY MANDATES:
+- Disconnect power supply before opening panel covers or touching electrical connections.
+- Wear cut-resistant gloves when handling metal panel edges and coil fins.

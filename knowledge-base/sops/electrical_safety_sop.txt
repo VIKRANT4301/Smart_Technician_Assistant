@@ -1,0 +1,25 @@
+=== ELECTRICAL CONTROL CABINET SOP: MODEL SOP-ELEC-04 ===
+SYSTEM SPECIFICATIONS:
+- Operating Voltage: 220V - 440V AC
+- Enclosure Rating: NEMA 4X
+- Main Breaker Limit: 100A
+
+TROUBLESHOOTING GUIDE – ELECTRICAL FAULTS:
+Symptom: Cabinet breaker trips, machine fails to start, loose contact indicator glows.
+Possible Causes:
+1. Loose cable connection: Loose contact near terminal blocks causes circuit breakdown or high resistance.
+2. Capacitor dielectric degradation: Swelling or failure of start/run capacitor.
+3. Contactor coil failure: Damage to magnetic starter.
+
+RESOLUTION STEPS:
+1. Lockout/Tagout the electrical control cabinet feeding the machine.
+2. Verify the circuit is completely dead using a calibrated non-contact voltage tester.
+3. Locate loose cables near terminal block 4, re-insert them, and tighten the clamp screws.
+4. Discharge the start/run capacitors using an insulated resistor tool.
+5. Disconnect the capacitor leads and test capacitance with a multimeter.
+6. Replace capacitor if the reading is ±10% outside the nominal rating.
+
+SAFETY MANDATES:
+- Wear Class E insulated safety gloves (rated up to 1000V) and safety glasses.
+- Remove all metal jewelry, rings, and watches before inspection.
+- Do not perform live-voltage tests alone.

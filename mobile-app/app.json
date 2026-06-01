@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Smart Technician Assistant",
+    "slug": "smart-technician-assistant",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#111827"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.assistant.smarttechnician"
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#111827"
+      },
+      "package": "com.assistant.smarttechnician"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Smart Technician Assistant to access the camera to capture and analyze machinery parts."
+        }
+      ],
+      [
+        "expo-av",
+        {
+          "microphonePermission": "Allow Smart Technician Assistant to access the microphone to record troubleshooting queries."
+        }
+      ]
+    ]
+  }
+}

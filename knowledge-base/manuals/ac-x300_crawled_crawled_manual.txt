@@ -1,0 +1,6 @@
+== HVAC COMPRESSOR MODEL AC-X300 ==
+Manufacturer: MockFactory
+RESOLUTION STEPS:
+1. Safe Shutdown: Turn off power at the main circuit breaker.
+2. Clean the condenser coil using low pressure water.
+3. Check capacitor using a multimeter.

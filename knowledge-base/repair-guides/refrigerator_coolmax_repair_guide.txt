@@ -1,0 +1,24 @@
+=== REFRIGERATOR REPAIR GUIDE: MODEL COOLMAX-R10 ===
+SYSTEM SPECIFICATIONS:
+- Defrost Heater Resistance: 30 - 40 ohms
+- Thermistor Resistance: 10k ohms at 32°F
+- Fan Motor Rating: 12V DC
+- Manufacturer: Whirlpool
+
+TROUBLESHOOTING GUIDE – DEFROST & FAN FAULTS:
+Symptom: Ice sheet forms on freezer floor, evaporator fan squeals or stops, warm fresh food section.
+Possible Causes:
+1. Blocked Defrost Drain: Ice or debris plugs the drain tube, causing meltwater to overflow into the cabin.
+2. Defrost Bi-Metal Failure: Failed thermostat prevents the defrost heater from energizing during the defrost cycle.
+3. Evaporator Fan Obstruction: Ice buildup physically blocks the fan blades from spinning.
+
+RESOLUTION STEPS:
+1. Safe Shutdown: Unplug the refrigerator power cord from the wall outlet before starting service.
+2. Drain Line Flush: Remove the freezer rear panel, clear ice blockages from the drain cup using hot water, and blow compressed air through the drain line.
+3. Bi-Metal Thermostat Swap: Cut the wires of the failed bi-metal thermostat, strip ends, splice in a new thermostat using waterproof wire connectors.
+4. Defrost Heater Test: Measure resistance of the heater element. If open-circuit, slide it out from the evaporator coil bottom and snap in a new one.
+5. Evaporator Fan Replacement: Unplug the fan wire harness, remove mounting screws, transfer the fan blade to the new 12V motor, and reinstall.
+
+PREVENTIVE MAINTENANCE:
+- Clean the defrost drain cup annually.
+- Inspect door gasket seal tightness using a paper test.

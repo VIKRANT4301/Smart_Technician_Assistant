@@ -1,0 +1,24 @@
+=== HVAC COMPRESSOR REPAIR GUIDE: MODEL AC-X300 ===
+SYSTEM SPECIFICATIONS:
+- Gasket Type: Neoprene Seal
+- Pressure Relief Setpoint: 450 PSI
+- Torque Specifications: Casing bolts 25 ft-lbs
+- Manufacturer: Samsung
+
+TROUBLESHOOTING GUIDE – REPAIR DIAGNOSTICS:
+Symptom: High head pressure, rattling sound from compressor, poor cooling output.
+Possible Causes:
+1. Damaged Compressor Mounting: Loose mounting bolts or worn vibration isolators.
+2. Contaminated Refrigerant: Moisture or air in the system piping.
+3. Internal Scroll Damage: Mechanical wear inside the hermetic scroll compressor.
+
+RESOLUTION STEPS:
+1. Discharge and Recovery: Recover all R-410A refrigerant from the system using an EPA-certified recovery unit. Do not vent to atmosphere.
+2. Casing Bolt Torqueing: Inspect compressor casing mounting bolts. Tighten to specification (25 ft-lbs) using a calibrated torque wrench.
+3. Filter Drier Replacement: Cut out the old liquid line filter drier and braze a new one in place while purging with dry nitrogen.
+4. Vacuum Evacuation: Pull a vacuum on the system to at least 500 microns. Hold for 15 minutes to verify zero moisture or leaks.
+5. Refrigerant Recharging: Charge system with R-410A by weight according to nameplate specifications using a digital scale.
+
+PREVENTIVE MAINTENANCE:
+- Inspect mounting rubber pads annually.
+- Check compressor amp draw during high heat loads.

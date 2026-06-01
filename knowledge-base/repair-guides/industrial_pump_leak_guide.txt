@@ -1,0 +1,24 @@
+=== CENTRIFUGAL PUMP REPAIR GUIDE: MODEL CP-100 ===
+SYSTEM SPECIFICATIONS:
+- Operating Temperature: 32°F to 150°F
+- Normal Operating Pressure: 45 PSI - 80 PSI
+- Pump Type: Centrifugal Pump Unit
+- Gasket Type: Nitrile O-Ring
+
+TROUBLESHOOTING GUIDE – PUMP LEAKAGE:
+Symptom: Fluid dripping near pump base plate, casing pressure drops.
+Possible Causes:
+1. Worn Mechanical Seal / Gland Packing: Friction and high operating hours degrade packing rings or ceramic faces of the seal.
+2. Damaged O-Rings or Casing Gaskets: Chemical incompatibility or thermal cycles cause elastomeric seals to split.
+3. Shaft Misalignment: Creates eccentric rotation which destroys seals.
+
+RESOLUTION STEPS:
+1. Isolate and De-pressurize: Shut down power using LOTO. Close inlet and outlet valves. Open bleed valve to drain remaining pressure.
+2. Safety Measures: If pumping chemicals or hot fluid, wear chemical-resistant gloves, apron, and full face shield.
+3. Disassemble Casing: Undo casing bolts in a cross-pattern. Remove front cover to inspect gaskets.
+4. Replace Gland Packing or Seals: Remove old packing rings, clean packing bore, install new pre-cut packing rings, offsetting joints by 90 degrees.
+5. Realign and Reassemble: Inspect alignment with a dial indicator. Reassemble casing with a new gasket.
+
+PREVENTIVE MAINTENANCE:
+- Lubricate pump bearings every 3 months.
+- Check alignment using dial indicator monthly.

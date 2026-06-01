@@ -1,0 +1,25 @@
+=== HVAC COMPRESSOR MANUAL: MODEL AC-X300 ===
+SYSTEM SPECIFICATIONS:
+- Operating Temperature: 40°F to 130°F
+- Normal Current Draw: 15A - 18A
+- Compressor Type: Hermetic Scroll
+- Coolant: R-410A
+- Manufacturer: Samsung
+
+TROUBLESHOOTING GUIDE - COMPRESSOR OVERHEATING:
+Symptom: Compressor housing temperature exceeds 185°F, thermal protection switch cuts power.
+Possible Causes:
+1. Blocked Condenser Coils: Dirt, leaves, or dust blocking ventilation causes heat buildup and motor overheating.
+2. Low Refrigerant Charge: System running low on R-410A coolant leads to motor overheating.
+3. Faulty Run Capacitor: A deteriorated start or run capacitor causes excessive winding current.
+
+RESOLUTION STEPS:
+1. Safe Shutdown: Turn off power at the main circuit breaker before starting any inspection.
+2. Coil Cleaning: Spray commercial coil cleaner on condenser coils, let it sit for 5 minutes, and rinse with low-pressure water. Clear any debris within a 2-foot radius.
+3. Electrical Check: Inspect run capacitor for swelling or leakage. Test capacitance with a multimeter. Replace if capacitance is ±10% outside rating.
+4. Refrigerant Check: Hook up pressure gauges to check suction and discharge pressures. Subcooling should be around 10-12°F.
+5. Ventilation Inspection: Clean air vents and inspect the condenser cooling fan. Ensure the fan motor is spinning freely.
+
+SAFETY MANDATES:
+- Wear safety goggles and heavy-duty work gloves when handling refrigerant or pressurized lines.
+- Use Lockout/Tagout (LOTO) protocols to ensure electrical circuits cannot be accidentally energized.

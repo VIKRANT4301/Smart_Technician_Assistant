@@ -1,0 +1,64 @@
+=== LAPTOP SERVICE MANUAL: MODEL LT-PRO X15 ===
+
+SYSTEM SPECIFICATIONS:
+
+* Display Size: 15.6" Full HD IPS
+* Processor: Intel Core i7 13th Gen
+* RAM: 16GB DDR5
+* Storage: 512GB NVMe SSD
+* Battery Capacity: 68Wh Lithium-Ion
+* Operating Temperature: 50°F to 95°F
+* Cooling System: Dual-Fan Heat Pipe
+* Power Adapter: 90W USB-C Fast Charging
+
+TROUBLESHOOTING GUIDE – LAPTOP OVERHEATING:
+
+Symptom:
+Laptop chassis becomes excessively hot, cooling fans run continuously at high speed, and the system may throttle performance or shut down unexpectedly.
+
+Possible Causes:
+
+1. Blocked Air Vents:
+   Dust accumulation or obstruction around intake/exhaust vents restricts airflow, causing internal heat buildup.
+
+2. Thermal Paste Degradation:
+   Dried or poorly applied CPU/GPU thermal paste reduces heat transfer efficiency between processor and heatsink.
+
+3. High Background Resource Usage:
+   Multiple heavy applications or malware processes can drive CPU/GPU usage to 100%, increasing operating temperatures.
+
+4. Faulty Cooling Fan:
+   Damaged or slow-spinning fan prevents proper heat dissipation from internal components.
+
+5. Incorrect Power Settings:
+   High-performance mode may force the processor to operate continuously at maximum clock speeds.
+
+RESOLUTION STEPS:
+
+1. Safe Shutdown:
+   Power off the laptop completely and disconnect the charger before performing maintenance.
+
+2. Vent Cleaning:
+   Use compressed air to clean dust from intake and exhaust vents. Maintain at least 6 inches of clearance around airflow openings.
+
+3. Fan Inspection:
+   Check whether cooling fans spin freely and produce normal airflow. Replace fans showing abnormal noise or inconsistent speed.
+
+4. Thermal Paste Replacement:
+   Remove heatsink assembly, clean old thermal compound using isopropyl alcohol, and apply a fresh thin layer of thermal paste before reinstallation.
+
+5. Software Diagnostics:
+   Open Task Manager and inspect CPU/GPU utilization. Disable unnecessary startup applications and scan the system for malware.
+
+6. Power Configuration:
+   Switch system power mode from “High Performance” to “Balanced” to reduce excessive thermal output.
+
+7. Temperature Verification:
+   Use hardware monitoring software to confirm CPU temperatures remain below 185°F (85°C) during normal operation.
+
+PREVENTIVE MAINTENANCE:
+
+* Clean ventilation openings every 3 months.
+* Avoid using the laptop on soft surfaces such as beds or cushions.
+* Keep BIOS and drivers updated regularly.
+* Store and operate the laptop in dry, dust-free environments.
