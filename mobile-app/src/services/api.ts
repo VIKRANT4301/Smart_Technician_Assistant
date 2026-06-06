@@ -273,9 +273,9 @@ export const uploadManualFile = async (
  * Ingest custom manual by downloading from a URL.
  */
 export const uploadManualUrl = async (params: {
-  product_name: string;
-  manufacturer: string;
-  model_number: string;
+  product_name?: string;
+  manufacturer?: string;
+  model_number?: string;
   url: string;
   description?: string;
   category?: string;

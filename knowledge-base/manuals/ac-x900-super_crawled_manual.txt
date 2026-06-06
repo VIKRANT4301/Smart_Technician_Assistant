@@ -1,0 +1,7 @@
+Samsung HVAC Compressor Model: AC-X900-SUPER
+This is the official troubleshooting guide for the Samsung AC-X900-SUPER HVAC unit.
+Troubleshooting Guidelines
+If the compressor runs hot, check the condenser coils and run capacitor.
+Resolution Steps
+1. Shut down power at the main circuit breaker labeling AC-MAIN-900.
+2. Clean the condenser fan blades using soft brush.

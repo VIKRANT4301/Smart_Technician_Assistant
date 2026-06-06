@@ -10,12 +10,13 @@ import {
   KeyboardAvoidingView,
   Platform,
   StatusBar,
-  Pressable
+  Pressable,
+  Image
 } from 'react-native';
 import { Send, Cpu, MessageSquare, BookOpen, User, Terminal, HelpCircle } from 'lucide-react-native';
 import { useApp } from '../context/AppContext';
 import { Theme } from '../theme/theme';
-import { queryChat, ChatMessage } from '../services/api';
+import { queryChat, ChatMessage, getBackendUrl } from '../services/api';
 
 interface ChatScreenProps {
   navigation: any;
@@ -32,7 +33,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
   const { theme } = useApp();
   const activeTheme = Theme.colors[theme];
 
-  const [messages, setMessages] = useState<ChatMessage[]>([
+  const [messages, setMessages] = useState<(ChatMessage & { sources?: string[] })[]>([
     {
       role: 'model',
       content: 'SYSTEM ACTIVE // AI Cognitive Assistant initialized.\n\nAsk me any diagnostic question, machine troubleshooting query, or safety protocol from our manual repository.'
@@ -74,7 +75,7 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
       if (result && result.response) {
         setMessages(prev => [
           ...prev,
-          { role: 'model', content: result.response }
+          { role: 'model', content: result.response, sources: result.sources }
         ]);
         if (result.sources && result.sources.length > 0) {
           setLastSources(result.sources);
@@ -156,6 +157,35 @@ const ChatScreen: React.FC<ChatScreenProps> = ({ navigation }) => {
                 <Text style={[styles.messageText, { color: activeTheme.text }]}>
                   {msg.content}
                 </Text>
+                
+                {isModel && msg.sources && msg.sources.length > 0 && (
+                  <View style={styles.chatImageContainer}>
+                    {msg.sources.map((source: string, sIdx: number) => {
+                      const lowerSrc = source.toLowerCase();
+                      let diagramName = '';
+                      if (lowerSrc.includes('laptop') || lowerSrc.includes('lt-pro') || lowerSrc.includes('lt_pro')) {
+                        diagramName = 'laptop_schematic.png';
+                      } else if (lowerSrc.includes('hvac') || lowerSrc.includes('ac-x') || lowerSrc.includes('compressor')) {
+                        diagramName = 'hvac_schematic.png';
+                      } else if (lowerSrc.includes('pump') || lowerSrc.includes('leak_guide')) {
+                        diagramName = 'pump_schematic.png';
+                      } else if (lowerSrc.includes('safety') || lowerSrc.includes('sop-elec')) {
+                        diagramName = 'safety_schematic.png';
+                      }
+                      
+                      if (!diagramName) return null;
+                      
+                      return (
+                        <ChatDiagramCard 
+                          key={sIdx}
+                          sourceName={source}
+                          imageUrl={`${getBackendUrl()}/static/${diagramName}`}
+                          theme={activeTheme}
+                        />
+                      );
+                    })}
+                  </View>
+                )}
               </View>
             </View>
           );
@@ -431,7 +461,83 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 8,
+  },
+  chatImageContainer: {
+    marginTop: 10,
+    gap: 8,
+  },
+  diagramCard: {
+    borderWidth: 1,
+    borderRadius: 10,
+    padding: 10,
+    marginTop: 6,
+    width: '100%',
+    minWidth: 200,
+  },
+  diagramTitle: {
+    fontSize: 9,
+    fontWeight: '900',
+    letterSpacing: 1,
+    marginBottom: 6,
+  },
+  diagramImageWrapper: {
+    width: '100%',
+    height: 120,
+    borderRadius: 6,
+    backgroundColor: 'rgba(0,0,0,0.2)',
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  diagramImage: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  diagramLoadingOverlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: 'rgba(6, 11, 22, 0.7)',
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
+
+const ChatDiagramCard = ({ sourceName, imageUrl, theme }: { sourceName: string, imageUrl: string, theme: any }) => {
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  return (
+    <View style={[styles.diagramCard, { borderColor: 'rgba(0, 240, 255, 0.15)', backgroundColor: theme.background }]}>
+      <Text style={[styles.diagramTitle, { color: theme.primary }]}>
+        {sourceName.toUpperCase()} SCHEMATIC
+      </Text>
+      <View style={styles.diagramImageWrapper}>
+        <Image 
+          source={{ uri: imageUrl }}
+          style={styles.diagramImage}
+          onLoadStart={() => {
+            setLoading(true);
+            setError(false);
+          }}
+          onLoadEnd={() => setLoading(false)}
+          onError={() => {
+            setLoading(false);
+            setError(true);
+          }}
+        />
+        {loading && (
+          <View style={styles.diagramLoadingOverlay}>
+            <ActivityIndicator size="small" color={theme.primary} />
+            <Text style={{ fontSize: 8, color: theme.muted, marginTop: 4 }}>LOADING SCHEMATIC...</Text>
+          </View>
+        )}
+        {error && (
+          <View style={styles.diagramLoadingOverlay}>
+            <Text style={{ fontSize: 8, color: theme.danger }}>SCHEMATIC OFFLINE</Text>
+          </View>
+        )}
+      </View>
+    </View>
+  );
+};
 
 export default ChatScreen;

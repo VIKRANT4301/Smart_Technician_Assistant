@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Industrial AI - Complete Platform Overview</title>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-color: #060913;
+            --card-bg: rgba(11, 17, 32, 0.65);
+            --border-color: rgba(0, 240, 255, 0.12);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            
+            /* Neon color schemes */
+            --cyan: #00f0ff;
+            --cyan-glow: rgba(0, 240, 255, 0.2);
+            --indigo: #6366f1;
+            --indigo-glow: rgba(99, 102, 241, 0.2);
+            --emerald: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.2);
+            --amber: #f59e0b;
+            --amber-glow: rgba(245, 158, 11, 0.2);
+            --rose: #f43f5e;
+            --rose-glow: rgba(244, 63, 94, 0.2);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            background-image: 
+                radial-gradient(at 10% 15%, rgba(99, 102, 241, 0.06) 0px, transparent 40%),
+                radial-gradient(at 90% 85%, rgba(0, 240, 255, 0.06) 0px, transparent 40%),
+                linear-gradient(rgba(255, 255, 255, 0.003) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.003) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+            min-height: 100vh;
+            padding: 24px;
+            overflow-x: hidden;
+        }
+
+        /* HUD borders & brackets styling */
+        .hud-card {
+            position: relative;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            backdrop-filter: blur(16px);
+            border-radius: 6px;
+            padding: 16px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .hud-card::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            width: 8px; height: 8px;
+            border-top: 2px solid var(--cyan);
+            border-left: 2px solid var(--cyan);
+            border-top-left-radius: 4px;
+        }
+
+        .hud-card::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; right: -1px;
+            width: 8px; height: 8px;
+            border-bottom: 2px solid var(--cyan);
+            border-right: 2px solid var(--cyan);
+            border-bottom-right-radius: 4px;
+        }
+
+        /* Layout structure */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.15);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        .header-title-container {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            border: 1.5px solid var(--cyan);
+            border-radius: 8px;
+            background: rgba(0, 240, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 15px var(--cyan-glow);
+            animation: pulse-glow-cyan 3s infinite alternate;
+        }
+
+        .logo-box i {
+            color: var(--cyan);
+        }
+
+        .header-text h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 26px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: var(--cyan);
+            text-shadow: 0 0 8px var(--cyan-glow);
+        }
+
+        .header-text p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .header-meta {
+            display: flex;
+            gap: 16px;
+        }
+
+        .meta-badge {
+            background: rgba(11, 17, 32, 0.8);
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .meta-badge.active {
+            color: var(--emerald);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .meta-badge.active span {
+            width: 8px;
+            height: 8px;
+            background: var(--emerald);
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px var(--emerald);
+            animation: blink 1.5s infinite;
+        }
+
+        /* Pillars Top Row */
+        .pillars-row {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .pillar-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            background: rgba(11, 17, 32, 0.4);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .pillar-card::before, .pillar-card::after {
+            display: none; /* Hide default corner brackets for top pillars to keep clean */
+        }
+
+        .pillar-icon-box {
+            width: 36px;
+            height: 36px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .pillar-card:hover .pillar-icon-box {
+            transform: scale(1.1);
+        }
+
+        .pillar-text h3 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .pillar-text p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.3;
+        }
+
+        /* 3 Column Grid */
+        .main-overview-grid {
+            display: grid;
+            grid-template-columns: 240px 1fr 240px;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+
+        .column-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Left Column: User Roles */
+        .roles-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .role-selector-card {
+            cursor: pointer;
+            border-left: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .role-selector-card::before, .role-selector-card::after {
+            display: none;
+        }
+
+        .role-selector-card:hover, .role-selector-card.active {
+            background: rgba(99, 102, 241, 0.1);
+            border-color: var(--indigo);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.05);
+            transform: translateX(4px);
+        }
+
+        .role-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+
+        .role-header i {
+            color: var(--indigo);
+        }
+
+        .role-header h4 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .role-selector-card p {
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        /* Center Column: Features & Flow */
+        .center-column {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .features-section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            color: var(--cyan);
+            text-align: center;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+        }
+
+        .feature-item-card {
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            background: rgba(11, 17, 32, 0.3);
+            border-radius: 4px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item-card::before, .feature-item-card::after {
+            display: none;
+        }
+
+        .feature-item-card.highlight {
+            border-color: rgba(0, 240, 255, 0.3);
+            background: rgba(0, 240, 255, 0.05);
+            box-shadow: 0 0 12px rgba(0, 240, 255, 0.05);
+            transform: scale(1.02);
+        }
+
+        .feature-item-card h5 {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .feature-item-card h5 i {
+            color: var(--cyan);
+            width: 14px;
+            height: 14px;
+        }
+
+        .feature-item-card p {
+            font-size: 10px;
+            color: var(--text-secondary);
+            line-height: 1.35;
+        }
+
+        /* Architecture Flow chart styling */
+        .flow-section-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            color: var(--cyan);
+            text-align: center;
+        }
+
+        .flow-card-container {
+            background: rgba(11, 17, 32, 0.4);
+            border-color: rgba(255, 255, 255, 0.03);
+        }
+
+        .flow-chart-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            gap: 8px;
+            overflow-x: auto;
+        }
+
+        .flow-step-node {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            border-radius: 4px;
+            padding: 10px 8px;
+            text-align: center;
+            flex: 1;
+            min-width: 105px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .flow-step-node:hover {
+            border-color: var(--cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.15);
+            transform: translateY(-2px);
+        }
+
+        .flow-step-node span {
+            display: block;
+            font-size: 9px;
+            color: var(--cyan);
+            text-transform: uppercase;
+            font-weight: bold;
+            margin-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+
+        .flow-step-node h6 {
+            font-size: 10px;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        .flow-connector {
+            color: var(--cyan);
+            animation: flow-pulse 1.5s infinite alternate;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .flow-connector i {
+            width: 16px;
+            height: 16px;
+        }
+
+        /* Right Column: Integrations */
+        .integrations-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .integration-item-card {
+            background: rgba(11, 17, 32, 0.4);
+            border-color: rgba(255, 255, 255, 0.03);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .integration-item-card::before, .integration-item-card::after {
+            display: none;
+        }
+
+        .integration-item-card.highlight {
+            border-color: rgba(56, 189, 248, 0.3);
+            background: rgba(56, 189, 248, 0.05);
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.05);
+            transform: translateX(-4px);
+        }
+
+        .integration-icon-box {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #38bdf8;
+            flex-shrink: 0;
+        }
+
+        .integration-details h5 {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 2px;
+        }
+
+        .integration-details p {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+
+        /* Bottom Grid: Security and Benefits */
+        .bottom-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .bottom-block-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .bottom-subgrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .bottom-card {
+            background: rgba(11, 17, 32, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.02);
+            border-radius: 4px;
+            padding: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .bottom-card::before, .bottom-card::after {
+            display: none;
+        }
+
+        .bottom-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .bottom-card.security:hover {
+            border-color: rgba(244, 63, 94, 0.3);
+            background: rgba(244, 63, 94, 0.03);
+            box-shadow: 0 0 12px rgba(244, 63, 94, 0.05);
+        }
+
+        .bottom-card.benefits:hover {
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.03);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.05);
+        }
+
+        .bottom-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+
+        .bottom-card-header h5 {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        .bottom-card.security .bottom-card-header i {
+            color: var(--rose);
+        }
+
+        .bottom-card.benefits .bottom-card-header i {
+            color: var(--emerald);
+        }
+
+        .bottom-card p {
+            font-size: 9.5px;
+            color: var(--text-secondary);
+            line-height: 1.35;
+        }
+
+        /* Animations */
+        @keyframes pulse-glow-cyan {
+            0% { box-shadow: 0 0 5px rgba(0, 240, 255, 0.1); }
+            100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.4); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes flow-pulse {
+            0% { transform: scale(0.9); opacity: 0.6; }
+            100% { transform: scale(1.1); opacity: 1; }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 1200px) {
+            .main-overview-grid {
+                grid-template-columns: 1fr;
+            }
+            .pillars-row {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .features-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            .bottom-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pillars-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .bottom-subgrid {
+                grid-template-columns: 1fr;
+            }
+            header {
+                flex-direction: column;
+                gap: 16px;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HUD Header -->
+    <header>
+        <div class="header-title-container">
+            <div class="logo-box">
+                <i data-lucide="cpu" class="w-8 h-8"></i>
+            </div>
+            <div class="header-text">
+                <h1>APEX INDUSTRIAL AI</h1>
+                <p>Complete Platform Overview & Multi-Agent Diagnostics Architecture</p>
+            </div>
+        </div>
+        <div class="header-meta">
+            <div class="meta-badge active">
+                <span></span>
+                Edge Reasoning Status: Active
+            </div>
+            <div class="meta-badge" style="color: var(--cyan); border-color: rgba(0, 240, 255, 0.3);">
+                <i data-lucide="shield-check" class="w-4 h-4 text-cyan"></i>
+                Safety SOP: Enforced
+            </div>
+        </div>
+    </header>
+
+    <!-- Top Pillars -->
+    <div class="pillars-row">
+        <div class="hud-card pillar-card">
+            <div class="pillar-icon-box" style="color: var(--cyan);">
+                <i data-lucide="stethoscope" class="w-5 h-5"></i>
+            </div>
+            <div class="pillar-text">
+                <h3>Intelligent Automation</h3>
+                <p>AI-powered field diagnostics & multi-turn reasoning checklists.</p>
+            </div>
+        </div>
+        <div class="hud-card pillar-card">
+            <div class="pillar-icon-box" style="color: var(--indigo);">
+                <i data-lucide="activity" class="w-5 h-5"></i>
+            </div>
+            <div class="pillar-text">
+                <h3>Real-time Monitoring</h3>
+                <p>Continuous telemetry sync, anomaly drift & wear alarms.</p>
+            </div>
+        </div>
+        <div class="hud-card pillar-card">
+            <div class="pillar-icon-box" style="color: var(--emerald);">
+                <i data-lucide="database" class="w-5 h-5"></i>
+            </div>
+            <div class="pillar-text">
+                <h3>Hybrid RAG Retrieval</h3>
+                <p>Lexical BM25 and semantic dense vector rank fusion (RRF).</p>
+            </div>
+        </div>
+        <div class="hud-card pillar-card">
+            <div class="pillar-icon-box" style="color: var(--amber);">
+                <i data-lucide="cpu" class="w-5 h-5"></i>
+            </div>
+            <div class="pillar-text">
+                <h3>Edge Resilience</h3>
+                <p>NPU-accelerated Ollama local LLM execution in offline fallbacks.</p>
+            </div>
+        </div>
+        <div class="hud-card pillar-card">
+            <div class="pillar-icon-box" style="color: var(--rose);">
+                <i data-lucide="shield-alert" class="w-5 h-5"></i>
+            </div>
+            <div class="pillar-text">
+                <h3>Safety LOTO SOP</h3>
+                <p>Mandatory checkpoint locking matching danger keywords.</p>
+            </div>
+        </div>
+        <div class="hud-card pillar-card">
+            <div class="pillar-icon-box" style="color: #38bdf8;">
+                <i data-lucide="git-pull-request" class="w-5 h-5"></i>
+            </div>
+            <div class="pillar-text">
+                <h3>Enterprise Integrations</h3>
+                <p>Automatic ServiceNow ticket sync & SAP work order generation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Overview Layout Grid -->
+    <div class="main-overview-grid">
+
+        <!-- Column 1: User Roles -->
+        <div class="roles-column">
+            <div class="column-title" style="color: var(--indigo);">
+                <i data-lucide="users" class="w-4 h-4"></i> User Roles
+            </div>
+
+            <div class="hud-card role-selector-card active" data-role="field-tech">
+                <div class="role-header">
+                    <i data-lucide="user" class="w-4 h-4"></i>
+                    <h4>Field Technicians</h4>
+                </div>
+                <p>Troubleshoot plant assets using photo scans, voice symptom input, and interactive checklists.</p>
+            </div>
+
+            <div class="hud-card role-selector-card" data-role="supervisor">
+                <div class="role-header">
+                    <i data-lucide="shield" class="w-4 h-4"></i>
+                    <h4>Operations Supervisors</h4>
+                </div>
+                <p>Monitor factory risk heatmaps, ingest new vendor manuals, and analyze MTTR metrics.</p>
+            </div>
+
+            <div class="hud-card role-selector-card" data-role="safety">
+                <div class="role-header">
+                    <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                    <h4>Safety Officers</h4>
+                </div>
+                <p>Verify lockout/tagout (LOTO) audit logging, review safety violations, and manage SOP drafts.</p>
+            </div>
+
+            <div class="hud-card role-selector-card" data-role="maintenance">
+                <div class="role-header">
+                    <i data-lucide="briefcase" class="w-4 h-4"></i>
+                    <h4>Maintenance Managers</h4>
+                </div>
+                <p>Inspect automated ServiceNow incidents, schedule SAP Work Orders, and rate repair efficiency.</p>
+            </div>
+
+            <div class="hud-card role-selector-card" data-role="admin">
+                <div class="role-header">
+                    <i data-lucide="settings" class="w-4 h-4"></i>
+                    <h4>System Admins</h4>
+                </div>
+                <p>Configure Ollama edge nodes, manage API routing, and debug localized vector indexing issues.</p>
+            </div>
+        </div>
+
+        <!-- Column 2: Platform Features & Architecture Flow -->
+        <div class="center-column">
+            
+            <!-- Grid of Platform Features -->
+            <div>
+                <div class="features-section-title">Application Features</div>
+                <div class="features-grid">
+                    <div class="feature-item-card" data-highlight-roles="field-tech,supervisor">
+                        <h5><i data-lucide="camera" class="w-3.5 h-3.5"></i> Multimodal Scanning</h5>
+                        <p>Accepts visual photos & vocal audio inputs to identify malfunctioning parts.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="field-tech,supervisor,admin">
+                        <h5><i data-lucide="search" class="w-3.5 h-3.5"></i> Hybrid RAG Search</h5>
+                        <p>Combines semantic vector lookups with precise BM25 keyword matching.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="field-tech,safety">
+                        <h5><i data-lucide="lock" class="w-3.5 h-3.5"></i> Safety SOPs & LOTO</h5>
+                        <p>Enforces physical checkoff gates for dangerous high-voltage machinery.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="admin">
+                        <h5><i data-lucide="shuffle" class="w-3.5 h-3.5"></i> Inference Routing</h5>
+                        <p>Switches automatically between Cloud Gemini and Local Ollama SLM nodes.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="field-tech">
+                        <h5><i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i> Solution Memory</h5>
+                        <p>Adjusts subsequent suggestions when the technician logs a failed repair step.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="safety,maintenance">
+                        <h5><i data-lucide="check-square" class="w-3.5 h-3.5"></i> Confidence Scoring</h5>
+                        <p>Enforces a math-based confidence gate. Below 60% blocks automated suggestions.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="field-tech">
+                        <h5><i data-lucide="message-square" class="w-3.5 h-3.5"></i> Interactive Chat</h5>
+                        <p>Interactive multi-turn technical conversation grounded in active manuals.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="supervisor,admin">
+                        <h5><i data-lucide="globe" class="w-3.5 h-3.5"></i> URL Spec Scraping</h5>
+                        <p>Scrapes external manufacturer HTML manuals and indexes them on-the-fly.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="maintenance">
+                        <h5><i data-lucide="alert-circle" class="w-3.5 h-3.5"></i> ServiceNow Alerts</h5>
+                        <p>Triggers high-priority INC dispatches on confidence threshold failure.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="maintenance,supervisor">
+                        <h5><i data-lucide="file-text" class="w-3.5 h-3.5"></i> SAP Work Orders</h5>
+                        <p>Maps resolved equipment IDs to active SAP PM work orders for logging.</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="field-tech">
+                        <h5><i data-lucide="mic" class="w-3.5 h-3.5"></i> Voice Synthesis</h5>
+                        <p>Transcribes speech symptoms (STT) and reads repair instructions aloud (TTS).</p>
+                    </div>
+                    <div class="feature-item-card" data-highlight-roles="supervisor">
+                        <h5><i data-lucide="grid" class="w-3.5 h-3.5"></i> Plant Floor Heatmap</h5>
+                        <p>Interactive operational risk map tracking warning or escalated nodes.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Platform Architecture Flowchart -->
+            <div>
+                <div class="flow-section-title">Platform Architecture Pipeline Flow</div>
+                <div class="hud-card flow-card-container">
+                    <div class="flow-chart-wrapper">
+                        
+                        <div class="flow-step-node" data-highlight-roles="field-tech">
+                            <span>Step 1</span>
+                            <h6>Data Ingestion</h6>
+                        </div>
+                        
+                        <div class="flow-connector"><i data-lucide="chevron-right"></i></div>
+                        
+                        <div class="flow-step-node" data-highlight-roles="field-tech,admin">
+                            <span>Step 2</span>
+                            <h6>STT & Vision</h6>
+                        </div>
+                        
+                        <div class="flow-connector"><i data-lucide="chevron-right"></i></div>
+                        
+                        <div class="flow-step-node" data-highlight-roles="admin">
+                            <span>Step 3</span>
+                            <h6>Model Match</h6>
+                        </div>
+                        
+                        <div class="flow-connector"><i data-lucide="chevron-right"></i></div>
+                        
+                        <div class="flow-step-node" data-highlight-roles="supervisor,admin">
+                            <span>Step 4</span>
+                            <h6>Hybrid RAG</h6>
+                        </div>
+                        
+                        <div class="flow-connector"><i data-lucide="chevron-right"></i></div>
+                        
+                        <div class="flow-step-node" data-highlight-roles="admin">
+                            <span>Step 5</span>
+                            <h6>LLM Inference</h6>
+                        </div>
+                        
+                        <div class="flow-connector"><i data-lucide="chevron-right"></i></div>
+                        
+                        <div class="flow-step-node" data-highlight-roles="safety,maintenance">
+                            <span>Step 6</span>
+                            <h6>Action Output</h6>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Column 3: System Integrations -->
+        <div class="integrations-column">
+            <div class="column-title" style="color: #38bdf8;">
+                <i data-lucide="cpu" class="w-4 h-4"></i> Integrations
+            </div>
+
+            <div class="hud-card integration-item-card" data-highlight-roles="field-tech,admin">
+                <div class="integration-icon-box">
+                    <i data-lucide="cloud" class="w-5 h-5"></i>
+                </div>
+                <div class="integration-details">
+                    <h5>Google Gemini API</h5>
+                    <p>Primary Cloud LLM Reasoning</p>
+                </div>
+            </div>
+
+            <div class="hud-card integration-item-card" data-highlight-roles="admin">
+                <div class="integration-icon-box">
+                    <i data-lucide="terminal" class="w-5 h-5"></i>
+                </div>
+                <div class="integration-details">
+                    <h5>Ollama Edge Node</h5>
+                    <p>Offline Fallback Diagnostics</p>
+                </div>
+            </div>
+
+            <div class="hud-card integration-item-card" data-highlight-roles="admin,supervisor">
+                <div class="integration-icon-box">
+                    <i data-lucide="database" class="w-5 h-5"></i>
+                </div>
+                <div class="integration-details">
+                    <h5>SQLite Database</h5>
+                    <p>Local Session & Audit Store</p>
+                </div>
+            </div>
+
+            <div class="hud-card integration-item-card" data-highlight-roles="admin,supervisor">
+                <div class="integration-icon-box">
+                    <i data-lucide="layers" class="w-5 h-5"></i>
+                </div>
+                <div class="integration-details">
+                    <h5>NumPy Vector Index</h5>
+                    <p>Offline Embeddings & RAG</p>
+                </div>
+            </div>
+
+            <div class="hud-card integration-item-card" data-highlight-roles="maintenance">
+                <div class="integration-icon-box">
+                    <i data-lucide="alert-octagon" class="w-5 h-5"></i>
+                </div>
+                <div class="integration-details">
+                    <h5>ServiceNow ITSM</h5>
+                    <p>Safety Escalation Ticketing</p>
+                </div>
+            </div>
+
+            <div class="hud-card integration-item-card" data-highlight-roles="maintenance,supervisor">
+                <div class="integration-icon-box">
+                    <i data-lucide="hard-drive" class="w-5 h-5"></i>
+                </div>
+                <div class="integration-details">
+                    <h5>SAP PM Module</h5>
+                    <p>Work Order Synchronization</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Section: Security and Key Benefits -->
+    <div class="bottom-grid">
+        
+        <!-- Left: Security & Governance -->
+        <div>
+            <div class="bottom-block-title" style="color: var(--rose);">
+                <i data-lucide="shield-check" class="w-4 h-4"></i> Security & Governance
+            </div>
+            <div class="bottom-subgrid">
+                <div class="bottom-card security">
+                    <div class="bottom-card-header">
+                        <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+                        <h5>LOTO Compliance</h5>
+                    </div>
+                    <p>Rigid step checklist locking based on physical danger triggers.</p>
+                </div>
+                <div class="bottom-card security">
+                    <div class="bottom-card-header">
+                        <i data-lucide="eye-off" class="w-3.5 h-3.5"></i>
+                        <h5>SQLite Isolation</h5>
+                    </div>
+                    <p>Self-contained database with no external cloud ingestion dependencies.</p>
+                </div>
+                <div class="bottom-card security">
+                    <div class="bottom-card-header">
+                        <i data-lucide="list-todo" class="w-3.5 h-3.5"></i>
+                        <h5>Full Safety Audit Logs</h5>
+                    </div>
+                    <p>Chronological persistence of checking operations & safety overrides.</p>
+                </div>
+                <div class="bottom-card security">
+                    <div class="bottom-card-header">
+                        <i data-lucide="wifi-off" class="w-3.5 h-3.5"></i>
+                        <h5>Offline Resiliency</h5>
+                    </div>
+                    <p>Runs offline inside isolated plant server racks with zero signal leak.</p>
+                </div>
+                <div class="bottom-card security">
+                    <div class="bottom-card-header">
+                        <i data-lucide="key" class="w-3.5 h-3.5"></i>
+                        <h5>Scope Access (RBAC)</h5>
+                    </div>
+                    <p>User-level API scopes protecting administrative upload methods.</p>
+                </div>
+                <div class="bottom-card security">
+                    <div class="bottom-card-header">
+                        <i data-lucide="fingerprint" class="w-3.5 h-3.5"></i>
+                        <h5>Data Sanitization</h5>
+                    </div>
+                    <p>Automatic scrubbing of personal information in logs & voice files.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Key Performance Benefits -->
+        <div>
+            <div class="bottom-block-title" style="color: var(--emerald);">
+                <i data-lucide="zap" class="w-4 h-4"></i> Key Benefits
+            </div>
+            <div class="bottom-subgrid">
+                <div class="bottom-card benefits">
+                    <div class="bottom-card-header">
+                        <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+                        <h5>Reduced MTTR</h5>
+                    </div>
+                    <p>Bypasses manual manuals to narrow down solutions in under 10 seconds.</p>
+                </div>
+                <div class="bottom-card benefits">
+                    <div class="bottom-card-header">
+                        <i data-lucide="shield-check" class="w-3.5 h-3.5"></i>
+                        <h5>Guaranteed Grounding</h5>
+                    </div>
+                    <p>RAG context prevents hallucinated repair advice on raw hardware.</p>
+                </div>
+                <div class="bottom-card benefits">
+                    <div class="bottom-card-header">
+                        <i data-lucide="server" class="w-3.5 h-3.5"></i>
+                        <h5>24/7 Offline Support</h5>
+                    </div>
+                    <p>Independent LLM diagnostics even during network disconnects.</p>
+                </div>
+                <div class="bottom-card benefits">
+                    <div class="bottom-card-header">
+                        <i data-lucide="trending-down" class="w-3.5 h-3.5"></i>
+                        <h5>Lower Operations Cost</h5>
+                    </div>
+                    <p>Eliminates second-tier field consultant trips for routine repairs.</p>
+                </div>
+                <div class="bottom-card benefits">
+                    <div class="bottom-card-header">
+                        <i data-lucide="lightbulb" class="w-3.5 h-3.5"></i>
+                        <h5>Actionable Diagnostics</h5>
+                    </div>
+                    <p>Returns clear mechanical checklists rather than vague chat answers.</p>
+                </div>
+                <div class="bottom-card benefits">
+                    <div class="bottom-card-header">
+                        <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+                        <h5>Safety-First Checks</h5>
+                    </div>
+                    <p>Prevents guesswork by auto-escalating on low diagnostic confidence.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Interactive role highlight mechanism
+        const roleSelectors = document.querySelectorAll('.role-selector-card');
+        const featureCards = document.querySelectorAll('.feature-item-card');
+        const flowNodes = document.querySelectorAll('.flow-step-node');
+        const integrationCards = document.querySelectorAll('.integration-item-card');
+
+        function highlightRoleRelations(role) {
+            // Remove previous highlights
+            featureCards.forEach(card => card.classList.remove('highlight'));
+            flowNodes.forEach(node => node.style.borderColor = '');
+            flowNodes.forEach(node => node.style.boxShadow = '');
+            integrationCards.forEach(card => card.classList.remove('highlight'));
+
+            if (!role) return;
+
+            // Highlight features matching role
+            featureCards.forEach(card => {
+                const roles = card.getAttribute('data-highlight-roles').split(',');
+                if (roles.includes(role)) {
+                    card.classList.add('highlight');
+                }
+            });
+
+            // Highlight flow nodes matching role
+            flowNodes.forEach(node => {
+                const roles = node.getAttribute('data-highlight-roles').split(',');
+                if (roles.includes(role)) {
+                    node.style.borderColor = 'var(--cyan)';
+                    node.style.boxShadow = '0 0 12px var(--cyan-glow)';
+                }
+            });
+
+            // Highlight integrations matching role
+            integrationCards.forEach(card => {
+                const roles = card.getAttribute('data-highlight-roles').split(',');
+                if (roles.includes(role)) {
+                    card.classList.add('highlight');
+                }
+            });
+        }
+
+        // Add event listeners
+        roleSelectors.forEach(selector => {
+            selector.addEventListener('click', () => {
+                // Toggle active state
+                const isActive = selector.classList.contains('active');
+                
+                roleSelectors.forEach(s => s.classList.remove('active'));
+                
+                if (!isActive) {
+                    selector.classList.add('active');
+                    highlightRoleRelations(selector.getAttribute('data-role'));
+                } else {
+                    highlightRoleRelations(null);
+                }
+            });
+        });
+
+        // Initialize with default role (field-tech)
+        highlightRoleRelations('field-tech');
+    </script>
+</body>
+</html>

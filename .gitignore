@@ -1,6 +1,6 @@
 .env
 *.env
-backend/.env
+backend_HF/.env
 
 node_modules/
 venv/

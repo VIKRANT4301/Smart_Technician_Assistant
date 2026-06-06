@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, ScrollView, Pressable, TextInput, StyleSheet, ActivityIndicator, Alert, Platform } from 'react-native';
-import { Camera, Mic, Search, ShieldAlert, Cpu, CheckCircle2, History, Bell, Activity, Thermometer, Radio, BookOpen, MessageSquare, Sliders } from 'lucide-react-native';
+import { Camera, Mic, Search, ShieldAlert, Cpu, CheckCircle2, History, Bell, Activity, Thermometer, Radio, BookOpen, MessageSquare, Sliders, GitBranch } from 'lucide-react-native';
 import Svg, { Path, Rect, Circle } from 'react-native-svg';
 import { useApp } from '../context/AppContext';
 import { Theme } from '../theme/theme';
@@ -162,19 +162,25 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
       </View>
 
-      {/* Quick Actions Shortcuts Grid */}
-      <Text style={[styles.sectionTitle, { color: activeTheme.primary }]}>OPERATIONAL SHORTCUTS</Text>
+      {/* 6-Module Enterprise Dashboard Grid */}
+      <Text style={[styles.sectionTitle, { color: activeTheme.primary }]}>APEX ENTERPRISE PORTAL</Text>
       <View style={styles.shortcutsGrid}>
+        {/* Row 1 */}
         <Pressable 
           style={({ pressed }) => [
             styles.shortcutCard, 
             { backgroundColor: activeTheme.card, borderColor: activeTheme.border },
             pressed && { borderColor: activeTheme.primary }
           ]}
-          onPress={() => navigation.navigate('KnowledgeTab' as any)}
+          onPress={() => {
+            Alert.alert(
+              "DASHBOARD KPI SUMMARY", 
+              `System Status: OPTIMAL\nMTTR: ${computedMTTR}m\nDowntime Saved: ${computedDowntimeSaved}h\nAsset Health: ${globalHealthScore}%`
+            );
+          }}
         >
-          <BookOpen size={20} color={activeTheme.primary} />
-          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>MANUALS</Text>
+          <Activity size={20} color={activeTheme.primary} />
+          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>DASHBOARD</Text>
         </Pressable>
 
         <Pressable 
@@ -183,12 +189,36 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             { backgroundColor: activeTheme.card, borderColor: activeTheme.border },
             pressed && { borderColor: activeTheme.primary }
           ]}
-          onPress={() => navigation.navigate('ChatTab' as any)}
+          onPress={() => navigation.navigate('Camera')}
         >
-          <MessageSquare size={20} color={activeTheme.info} />
-          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>AI CHAT</Text>
+          <Camera size={20} color={activeTheme.info} />
+          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>DIAGNOSTICS</Text>
         </Pressable>
 
+        <Pressable 
+          style={({ pressed }) => [
+            styles.shortcutCard, 
+            { backgroundColor: activeTheme.card, borderColor: activeTheme.border },
+            pressed && { borderColor: activeTheme.primary }
+          ]}
+          onPress={() => {
+            if (historyList.length > 0) {
+              navigation.navigate('Result', { analysisResult: historyList[0] });
+            } else {
+              Alert.alert(
+                "SAFETY CENTER (LOTO)", 
+                "MANDATORY ISOLATION PROCEDURES:\n1. Lockout/Tagout active energy source.\n2. Confirm zero energy state via multimeter.\n3. Wear high-voltage PPE gloves."
+              );
+            }
+          }}
+        >
+          <ShieldAlert size={20} color={activeTheme.danger} />
+          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>SAFETY CENTER</Text>
+        </Pressable>
+      </View>
+
+      <View style={[styles.shortcutsGrid, { marginTop: -12, marginBottom: 24 }]}>
+        {/* Row 2 */}
         <Pressable 
           style={({ pressed }) => [
             styles.shortcutCard, 
@@ -198,7 +228,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           onPress={() => navigation.navigate('HistoryTab' as any)}
         >
           <History size={20} color={activeTheme.success} />
-          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>WORKLOGS</Text>
+          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>ASSET HISTORY</Text>
         </Pressable>
 
         <Pressable 
@@ -207,10 +237,22 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             { backgroundColor: activeTheme.card, borderColor: activeTheme.border },
             pressed && { borderColor: activeTheme.primary }
           ]}
-          onPress={() => navigation.navigate('SettingsTab' as any)}
+          onPress={() => navigation.navigate('KnowledgeTab' as any)}
         >
-          <Sliders size={20} color={activeTheme.warning} />
-          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>SETTINGS</Text>
+          <BookOpen size={20} color={activeTheme.primary} />
+          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>KNOWLEDGE BASE</Text>
+        </Pressable>
+
+        <Pressable 
+          style={({ pressed }) => [
+            styles.shortcutCard, 
+            { backgroundColor: activeTheme.card, borderColor: activeTheme.border },
+            pressed && { borderColor: activeTheme.primary }
+          ]}
+          onPress={() => navigation.navigate('DigitalTwin' as any, { assetId: 'list' })}
+        >
+          <GitBranch size={20} color={activeTheme.primary} />
+          <Text style={[styles.shortcutText, { color: activeTheme.text }]}>DIGITAL TWIN</Text>
         </Pressable>
       </View>
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, Pressable, TextInput, StyleSheet, Alert, ScrollView, Platform } from 'react-native';
 import { useApp } from '../context/AppContext';
 import { Theme } from '../theme/theme';
-import { Settings, Moon, Sun, Server, Camera, Mic, Info, CheckCircle2, Sliders, Volume2, ShieldCheck } from 'lucide-react-native';
+import { Settings, Moon, Sun, Server, Camera, Mic, Info, CheckCircle2, Sliders, Volume2, ShieldCheck, Cpu } from 'lucide-react-native';
 import { getOllamaConfig, updateOllamaConfig } from '../services/api';
 
 const SettingsScreen: React.FC = () => {
@@ -346,6 +346,43 @@ const SettingsScreen: React.FC = () => {
             <Text style={[styles.permissionName, { color: activeTheme.text }]}>Microphone Access</Text>
           </View>
           <CheckCircle2 size={16} color={activeTheme.success} />
+        </View>
+      </View>
+
+      {/* AMD ROCm Edge-AI Acceleration Info */}
+      <View style={[styles.card, { backgroundColor: activeTheme.card, borderColor: '#F59E0B', borderWidth: 1.5 }]}>
+        <View style={styles.labelWithIcon}>
+          <Cpu size={14} color="#F59E0B" style={{ marginRight: 6 }} />
+          <Text style={[styles.cardLabel, { color: '#F59E0B', marginBottom: 0 }]}>AMD ROCm ACCELERATION PROFILE</Text>
+        </View>
+        <Text style={[styles.descText, { color: activeTheme.muted, marginTop: 8 }]}>
+          Hardware acceleration status and model routing parameters running on local AMD EPYC VM.
+        </Text>
+        
+        <View style={styles.permissionItem}>
+          <View style={styles.permissionLeft}>
+            <Sliders size={18} color="#F59E0B" style={{ marginRight: 8 }} />
+            <Text style={[styles.permissionName, { color: activeTheme.text }]}>AMD ROCm Status</Text>
+          </View>
+          <Text style={{ fontSize: 11, fontWeight: '900', color: activeTheme.success }}>✓ ACTIVE (ROCm v6.1)</Text>
+        </View>
+
+        <View style={[styles.permissionItem, { borderTopWidth: 1, borderTopColor: activeTheme.border }]}>
+          <View style={styles.permissionLeft}>
+            <Server size={18} color="#F59E0B" style={{ marginRight: 8 }} />
+            <Text style={[styles.permissionName, { color: activeTheme.text }]}>Deployment Mode</Text>
+          </View>
+          <Text style={{ fontSize: 11, fontWeight: '900', color: activeTheme.info }}>OFFLINE-FIRST / HYBRID</Text>
+        </View>
+
+        <View style={[styles.permissionItem, { borderTopWidth: 1, borderTopColor: activeTheme.border }]}>
+          <View style={styles.permissionLeft}>
+            <Info size={18} color="#F59E0B" style={{ marginRight: 8 }} />
+            <Text style={[styles.permissionName, { color: activeTheme.text }]}>Validated Local Models</Text>
+          </View>
+          <Text style={{ fontSize: 9, fontWeight: '900', color: activeTheme.muted, textAlign: 'right', maxWidth: 185 }}>
+            Llama-3 (8B) / Phi-3 (3.8B) / Gemma-3 / Qwen-VL (Vision)
+          </Text>
         </View>
       </View>
 

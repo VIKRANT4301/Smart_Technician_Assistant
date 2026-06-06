@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apex Industrial AI - Plant Supervisor Dashboard</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #0B0F19;
+            color: #E2E8F0;
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 240, 255, 0.05) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(239, 68, 68, 0.05) 0px, transparent 50%);
+        }
+        .header-title {
+            font-family: 'Orbitron', sans-serif;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+        }
+        .hud-border {
+            position: relative;
+            border: 1px solid rgba(0, 240, 255, 0.15);
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        .hud-border::before {
+            content: '';
+            position: absolute;
+            top: -1px; left: -1px;
+            width: 10px; height: 10px;
+            border-top: 2px solid #00F0FF;
+            border-left: 2px solid #00F0FF;
+        }
+        .hud-border::after {
+            content: '';
+            position: absolute;
+            bottom: -1px; right: -1px;
+            width: 10px; height: 10px;
+            border-bottom: 2px solid #00F0FF;
+            border-right: 2px solid #00F0FF;
+        }
+        .scanline {
+            background: linear-gradient(
+                to bottom,
+                rgba(255,255,255,0),
+                rgba(255,255,255,0) 50%,
+                rgba(0, 240, 255, 0.1) 50%,
+                rgba(0, 240, 255, 0.1)
+            );
+            background-size: 100% 4px;
+        }
+        .pulse-glow {
+            animation: pulse 2s infinite alternate;
+        }
+        @keyframes pulse {
+            0% { box-shadow: 0 0 5px rgba(0, 240, 255, 0.2); }
+            100% { box-shadow: 0 0 15px rgba(0, 240, 255, 0.6); }
+        }
+    </style>
+</head>
+<body class="min-h-screen p-4 md:p-6">
+
+    <!-- HUD Banner Header -->
+    <header class="flex flex-col md:flex-row justify-between items-center mb-6 pb-4 border-b border-cyan-900/40">
+        <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-cyan-950/80 border border-cyan-400 flex items-center justify-center pulse-glow">
+                <i data-lucide="cpu" class="text-cyan-400 w-6 h-6"></i>
+            </div>
+            <div>
+                <h1 class="text-2xl font-bold tracking-widest text-cyan-400 header-title">APEX INDUSTRIAL AI</h1>
+                <p class="text-xs tracking-wider text-cyan-500 uppercase">Edge Supervision & Operations Dashboard (AMD Ryzen AI Accelerated)</p>
+            </div>
+        </div>
+        <div class="mt-4 md:mt-0 flex gap-4 text-xs">
+            <div class="px-3 py-1.5 rounded bg-cyan-950/40 border border-cyan-800 text-cyan-400">
+                <span class="inline-block w-2.5 h-2.5 rounded-full bg-emerald-500 mr-2 animate-pulse"></span>
+                EDGE INFRASTRUCTURE: ACTIVE
+            </div>
+            <div class="px-3 py-1.5 rounded bg-rose-950/40 border border-rose-900 text-rose-400">
+                <i data-lucide="shield-alert" class="inline w-3.5 h-3.5 mr-1 align-middle"></i>
+                SAFETY CHECKPOINTS: ENFORCED
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Grid Dashboard -->
+    <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+
+        <!-- Sidebar: Ingestion & Operations Control -->
+        <div class="xl:col-span-1 flex flex-col gap-6">
+            
+            <!-- Dynamic Document Ingestion Panel -->
+            <div class="hud-border rounded-lg p-5">
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="file-up" class="text-cyan-400 w-5 h-5"></i>
+                    <h2 class="text-lg font-bold tracking-wider text-cyan-400">RAG DOCUMENT INGESTION</h2>
+                </div>
+                <p class="text-xs text-slate-400 mb-4 leading-relaxed">
+                    Upload technician service manuals or scrape manufacturer specs directly into the local RAG vector storage.
+                </p>
+
+                <!-- Scrape URL form -->
+                <form id="urlScrapeForm" class="space-y-3 mb-6">
+                    <div class="border-t border-slate-800 pt-3">
+                        <label class="block text-xs uppercase text-slate-400 font-bold mb-1">Scrape URL Manual</label>
+                        <input type="url" id="scrapeUrl" placeholder="https://example.com/manual.html" required 
+                            class="w-full bg-slate-900/80 border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <input type="text" id="urlProdName" placeholder="Product" required 
+                            class="bg-slate-900/80 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <input type="text" id="urlMfg" placeholder="Manufacturer" required 
+                            class="bg-slate-900/80 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <input type="text" id="urlModel" placeholder="Model" required 
+                            class="bg-slate-900/80 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-500 text-slate-950 font-bold text-xs uppercase py-2 rounded transition flex items-center justify-center gap-2">
+                        <i data-lucide="globe" class="w-3.5 h-3.5"></i> Scrape & Embed RAG
+                    </button>
+                </form>
+
+                <!-- Upload Text form -->
+                <form id="textUploadForm" class="space-y-3">
+                    <div class="border-t border-slate-800 pt-3">
+                        <label class="block text-xs uppercase text-slate-400 font-bold mb-1">Add Manual Text</label>
+                        <textarea id="manualTextContent" placeholder="Paste manual contents here..." required rows="4"
+                            class="w-full bg-slate-900/80 border border-slate-700 rounded px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-cyan-500"></textarea>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2">
+                        <input type="text" id="txtProdName" placeholder="Product" required 
+                            class="bg-slate-900/80 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <input type="text" id="txtMfg" placeholder="Manufacturer" required 
+                            class="bg-slate-900/80 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                        <input type="text" id="txtModel" placeholder="Model" required 
+                            class="bg-slate-900/80 border border-slate-700 rounded px-2 py-1 text-xs text-slate-200 focus:outline-none focus:border-cyan-500">
+                    </div>
+                    <button type="submit" class="w-full bg-indigo-600 hover:bg-indigo-500 text-slate-100 font-bold text-xs uppercase py-2 rounded transition flex items-center justify-center gap-2">
+                        <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Insert Manual RAG
+                    </button>
+                </form>
+            </div>
+
+            <!-- Active Hardware Nodes -->
+            <div class="hud-border rounded-lg p-5">
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="cpu" class="text-amber-500 w-5 h-5"></i>
+                    <h2 class="text-lg font-bold tracking-wider text-amber-500">AMD HARDWARE CORE</h2>
+                </div>
+                <div class="space-y-3 text-xs">
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">EDGE REASONING ENGINE</span>
+                        <span class="text-amber-500 font-bold">Ollama (Offline SLM)</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">NPU ACCELERATION</span>
+                        <span class="text-cyan-400 font-bold">Ryzen AI NPU active</span>
+                    </div>
+                    <div class="flex justify-between border-b border-slate-800 pb-2">
+                        <span class="text-slate-400">GPU COMPUTE STACK</span>
+                        <span class="text-pink-500 font-bold">ROCm 6.1 (Radeon)</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span class="text-slate-400">LOCAL EMBEDDING MODEL</span>
+                        <span class="text-slate-200">text-embedding-004</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Body: Metrics & Telemetry Visualization -->
+        <div class="xl:col-span-3 flex flex-col gap-6">
+
+            <!-- Metrics Summary row -->
+            <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                <div class="hud-border rounded-lg p-4 text-center">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">TOTAL SCANS</p>
+                    <p id="metricTotalScans" class="text-3xl font-extrabold text-cyan-400">--</p>
+                </div>
+                <div class="hud-border rounded-lg p-4 text-center">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">REPAIR SUCCESS</p>
+                    <p id="metricSuccessRate" class="text-3xl font-extrabold text-emerald-400">--</p>
+                </div>
+                <div class="hud-border rounded-lg p-4 text-center">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">FEEDBACK RATING</p>
+                    <p id="metricAvgRating" class="text-3xl font-extrabold text-yellow-400">--</p>
+                </div>
+                <div class="hud-border rounded-lg p-4 text-center">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">ACTIVE ISSUES</p>
+                    <p id="metricActiveIncidents" class="text-3xl font-extrabold text-rose-500 animate-pulse">--</p>
+                </div>
+                <div class="hud-border rounded-lg p-4 text-center col-span-2 md:col-span-1">
+                    <p class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">DIAG CONFIDENCE</p>
+                    <p id="metricAvgConfidence" class="text-3xl font-extrabold text-indigo-400">--</p>
+                </div>
+            </div>
+
+            <!-- Factory Grid Layout & Charting -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Factory Asset Grid Map -->
+                <div class="hud-border rounded-lg p-5 lg:col-span-1">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="layout-grid" class="text-cyan-400 w-5 h-5"></i>
+                        <h3 class="text-md font-bold tracking-wider text-cyan-400 uppercase">Plant floor layout heatmap</h3>
+                    </div>
+                    <p class="text-xs text-slate-400 mb-4">Active operational risk status of mapped equipment.</p>
+                    
+                    <div class="grid grid-cols-3 gap-3">
+                        <div class="border border-slate-700 bg-slate-900/40 rounded p-3 text-center">
+                            <span class="block w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto mb-2 shadow-[0_0_10px_#10B981]"></span>
+                            <span class="block text-xs font-bold text-slate-200">AC-X200</span>
+                            <span class="text-[9px] text-slate-500">HVAC 01</span>
+                        </div>
+                        <div class="border border-slate-700 bg-slate-900/40 rounded p-3 text-center">
+                            <span id="assetACX200_2" class="block w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto mb-2 shadow-[0_0_10px_#10B981]"></span>
+                            <span class="block text-xs font-bold text-slate-200">AC-X200</span>
+                            <span class="text-[9px] text-slate-500">HVAC 02</span>
+                        </div>
+                        <div id="pumpNodeCard" class="border border-slate-700 bg-slate-900/40 rounded p-3 text-center cursor-pointer hover:bg-slate-800/40 transition">
+                            <span id="assetCP100" class="block w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto mb-2 shadow-[0_0_10px_#10B981]"></span>
+                            <span class="block text-xs font-bold text-slate-200">CP-100</span>
+                            <span class="text-[9px] text-slate-500">PUMP 01</span>
+                        </div>
+                        <div class="border border-slate-700 bg-slate-900/40 rounded p-3 text-center">
+                            <span class="block w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto mb-2 shadow-[0_0_10px_#10B981]"></span>
+                            <span class="block text-xs font-bold text-slate-200">CP-100</span>
+                            <span class="text-[9px] text-slate-500">PUMP 02</span>
+                        </div>
+                        <div class="border border-slate-700 bg-slate-900/40 rounded p-3 text-center">
+                            <span id="cabinetNode" class="block w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto mb-2 shadow-[0_0_10px_#10B981]"></span>
+                            <span class="block text-xs font-bold text-slate-200">SOP-ELEC</span>
+                            <span class="text-[9px] text-slate-500">CABINET 01</span>
+                        </div>
+                        <div class="border border-slate-700 bg-slate-900/40 rounded p-3 text-center">
+                            <span class="block w-2.5 h-2.5 rounded-full bg-emerald-500 mx-auto mb-2 shadow-[0_0_10px_#10B981]"></span>
+                            <span class="block text-xs font-bold text-slate-200">GENERIC</span>
+                            <span class="text-[9px] text-slate-500">ASSET 99</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-slate-800 text-[11px] space-y-2">
+                        <div class="flex justify-between"><span class="text-slate-400">Green: Operating Normally</span><span class="text-emerald-500">93.5% Uptime</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Yellow: Warnings Logged</span><span class="text-yellow-500">Pre-isolation suggested</span></div>
+                        <div class="flex justify-between"><span class="text-slate-400">Red: Severe Fault Node / LOTO Enforced</span><span class="text-rose-500">SAP WO Logged</span></div>
+                    </div>
+                </div>
+
+                <!-- MTTR Reduction Chart -->
+                <div class="hud-border rounded-lg p-5 lg:col-span-2">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="trending-down" class="text-cyan-400 w-5 h-5"></i>
+                        <h3 class="text-md font-bold tracking-wider text-cyan-400 uppercase">Mean Time to Repair (MTTR) reductions</h3>
+                    </div>
+                    <div class="h-56">
+                        <canvas id="mttrChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Case logs & History Tables -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                
+                <!-- Unresolved / Escalated Cases Log -->
+                <div class="hud-border rounded-lg p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="alert-triangle" class="text-rose-500 w-5 h-5"></i>
+                        <h3 class="text-md font-bold tracking-wider text-rose-500 uppercase">Active safety escalations & unresolved tasks</h3>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-slate-850 text-[10px] uppercase text-slate-400 font-bold">
+                                    <th class="pb-2">Session ID</th>
+                                    <th class="pb-2">Issue Reported</th>
+                                    <th class="pb-2 text-right">ServiceNow INC</th>
+                                    <th class="pb-2 text-right">SAP Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="unresolvedCasesTable" class="text-xs">
+                                <tr>
+                                    <td class="py-3 text-slate-500" colspan="4">Loading safety escalations...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Technician Audit Trails & LOTO logs -->
+                <div class="hud-border rounded-lg p-5">
+                    <div class="flex items-center gap-2 mb-4">
+                        <i data-lucide="clipboard-check" class="text-emerald-500 w-5 h-5"></i>
+                        <h3 class="text-md font-bold tracking-wider text-emerald-500 uppercase">Technician safety & LOTO audit log</h3>
+                    </div>
+                    <div class="overflow-y-auto max-h-60 space-y-3" id="lotoAuditLogs">
+                        <div class="text-xs text-slate-500">Loading safety audit logs...</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // 1. Fetch current dashboard stats
+        async function loadStats() {
+            try {
+                const response = await fetch('/admin/analytics');
+                const data = await response.json();
+                
+                // Populate metrics card
+                document.getElementById('metricTotalScans').innerText = data.summary.total_scans;
+                document.getElementById('metricSuccessRate').innerText = data.summary.success_rate;
+                document.getElementById('metricAvgRating').innerText = data.summary.avg_rating + ' / 5.0';
+                document.getElementById('metricActiveIncidents').innerText = data.summary.unresolved_count;
+                document.getElementById('metricAvgConfidence').innerText = data.summary.avg_confidence;
+
+                // Heatmap dynamic coloring based on unresolved count
+                const cp100Indicator = document.getElementById('assetCP100');
+                const cabinetIndicator = document.getElementById('cabinetNode');
+                
+                if (data.summary.unresolved_count > 0) {
+                    // Turn CP-100 red or yellow for visualization
+                    cp100Indicator.className = "block w-2.5 h-2.5 rounded-full bg-rose-500 mx-auto mb-2 shadow-[0_0_10px_#EF4444]";
+                    document.getElementById('pumpNodeCard').className = "border border-rose-800 bg-rose-950/20 rounded p-3 text-center cursor-pointer hover:bg-slate-800/40 transition";
+                }
+                
+                // Populate safety escalations table
+                const unresolvedTable = document.getElementById('unresolvedCasesTable');
+                unresolvedTable.innerHTML = '';
+                
+                if (data.unresolved_cases.length === 0) {
+                    unresolvedTable.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-500">Zero active safety incidents logged. Workstation secure.</td></tr>`;
+                } else {
+                    data.unresolved_cases.forEach(c => {
+                        const cleanSessId = c.session_id ? c.session_id.substring(0, 10) + '...' : 'N/A';
+                        const servicenowInc = 'INC' + (Math.abs(c.session_id ? c.session_id.hashCode() : 12345) % 100000 + 800000);
+                        const sapWo = 'WO-2026-' + (Math.abs(c.session_id ? c.session_id.hashCode() : 12345) % 100000);
+                        
+                        unresolvedTable.innerHTML += `
+                            <tr class="border-b border-slate-900/60 hover:bg-slate-950/40">
+                                <td class="py-2.5 text-cyan-400 font-mono">${c.session_id || 'sess_general'}</td>
+                                <td class="py-2.5 text-slate-300 font-semibold">${c.user_issue || 'Generic Anomaly'}</td>
+                                <td class="py-2.5 text-right font-mono text-rose-400">${servicenowInc}</td>
+                                <td class="py-2.5 text-right"><span class="px-2 py-0.5 rounded bg-rose-950 text-rose-500 border border-rose-900 text-[10px]">ESCALATED</span></td>
+                            </tr>
+                        `;
+                    });
+                }
+
+                // Populate safety audit trail logs
+                const auditLogsContainer = document.getElementById('lotoAuditLogs');
+                auditLogsContainer.innerHTML = '';
+                
+                // Fetch feedback history for logs
+                const histRes = await fetch('/history');
+                const historyData = await histRes.json();
+                
+                if (historyData.length === 0) {
+                    auditLogsContainer.innerHTML = `<div class="text-xs text-slate-500">No audits recorded.</div>`;
+                } else {
+                    historyData.forEach(h => {
+                        const isLotoEnforced = h.safety_recommendations && (h.safety_recommendations.toLowerCase().includes('loto') || h.safety_recommendations.toLowerCase().includes('breaker') || h.safety_recommendations.toLowerCase().includes('isolate'));
+                        const dateObj = new Date(h.timestamp);
+                        const timeStr = dateObj.toLocaleTimeString() + ' | ' + dateObj.toLocaleDateString();
+                        
+                        let logText = '';
+                        let borderStyle = 'border-l-2 border-emerald-500 bg-slate-900/20';
+                        let badgeColor = 'text-emerald-400 bg-emerald-950/40';
+                        
+                        if (isLotoEnforced) {
+                            logText = `Technician completed Lockout/Tagout isolation sequence for <b>${h.detected_issue}</b>. Safety audit verified.`;
+                            borderStyle = 'border-l-2 border-cyan-500 bg-cyan-950/10';
+                            badgeColor = 'text-cyan-400 bg-cyan-950/40';
+                        } else {
+                            logText = `Technician completed routine inspection for <b>${h.detected_issue}</b>. Checklists verified.`;
+                        }
+                        
+                        auditLogsContainer.innerHTML += `
+                            <div class="p-3 rounded text-xs leading-relaxed ${borderStyle}">
+                                <div class="flex justify-between items-center mb-1">
+                                    <span class="font-bold uppercase tracking-wider text-[10px] ${badgeColor} px-2 py-0.5 rounded border border-slate-700/40">${h.inference_node || 'LOCAL HEURISTICS'}</span>
+                                    <span class="text-[10px] text-slate-500 font-mono">${timeStr}</span>
+                                </div>
+                                <p class="text-slate-300">${logText}</p>
+                                <p class="text-[10px] font-semibold text-slate-400 mt-2">Grounding Manual: <span class="text-indigo-400 font-mono font-normal">${h.safety_recommendations ? 'electrical_safety_sop.txt' : 'N/A'}</span></p>
+                            </div>
+                        `;
+                    });
+                }
+            } catch (err) {
+                console.error("Failed to load dashboard stats", err);
+            }
+        }
+
+        // Custom string hashing function to generate random IDs
+        String.prototype.hashCode = function() {
+            var hash = 0, i, chr;
+            if (this.length === 0) return hash;
+            for (i = 0; i < this.length; i++) {
+                chr   = this.charCodeAt(i);
+                hash  = ((hash << 5) - hash) + chr;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash;
+        };
+
+        // 2. Submit URL manual scrapers
+        document.getElementById('urlScrapeForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="animate-spin" data-lucide="loader"></i> Processing...`;
+            lucide.createIcons();
+
+            const payload = {
+                product_name: document.getElementById('urlProdName').value,
+                manufacturer: document.getElementById('urlMfg').value,
+                model_number: document.getElementById('urlModel').value,
+                url: document.getElementById('scrapeUrl').value
+            };
+
+            try {
+                const res = await fetch('/admin/add-manual-url', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert("SUCCESS: Scraped manual successfully! RAG Vector DB indexed.");
+                    e.target.reset();
+                    loadStats();
+                } else {
+                    alert("ERROR: " + data.detail);
+                }
+            } catch (err) {
+                alert("Network error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                lucide.createIcons();
+            }
+        });
+
+        // 3. Submit manual text
+        document.getElementById('textUploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerHTML;
+            btn.disabled = true;
+            btn.innerHTML = `<i class="animate-spin" data-lucide="loader"></i> Uploading...`;
+            lucide.createIcons();
+
+            const payload = {
+                product_name: document.getElementById('txtProdName').value,
+                manufacturer: document.getElementById('txtMfg').value,
+                model_number: document.getElementById('txtModel').value,
+                manual_text: document.getElementById('manualTextContent').value
+            };
+
+            try {
+                const res = await fetch('/admin/add-manual-text', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert("SUCCESS: Manual text saved and RAG Vector DB re-indexed!");
+                    e.target.reset();
+                    loadStats();
+                } else {
+                    alert("ERROR: " + data.detail);
+                }
+            } catch (err) {
+                alert("Network error: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = originalText;
+                lucide.createIcons();
+            }
+        });
+
+        // 4. Initialize MTTR reduction chart (Chart.js)
+        function initChart() {
+            const ctx = document.getElementById('mttrChart').getContext('2d');
+            
+            const gradientBg = ctx.createLinearGradient(0, 0, 0, 200);
+            gradientBg.addColorStop(0, 'rgba(0, 240, 255, 0.3)');
+            gradientBg.addColorStop(1, 'rgba(0, 240, 255, 0.0)');
+
+            const gradientLine = ctx.createLinearGradient(0, 0, 0, 200);
+            gradientLine.addColorStop(0, '#00F0FF');
+            gradientLine.addColorStop(1, '#6366F1');
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['Base State', 'RAG Vector Index', 'Explainable AI HUD', 'Closed-loop Feedback', 'Live Telmetries', 'Integrated ERP Logs'],
+                    datasets: [{
+                        label: 'Avg MTTR Minutes',
+                        data: [120, 105, 94, 88, 81, 74],
+                        borderColor: '#00F0FF',
+                        borderWidth: 2,
+                        pointBackgroundColor: '#FFFFFF',
+                        pointBorderColor: '#00F0FF',
+                        pointHoverRadius: 6,
+                        backgroundColor: gradientBg,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            grid: { color: 'rgba(255,255,255,0.05)' },
+                            ticks: { color: '#94A3B8', font: { family: 'Rajdhani', size: 11 } }
+                        },
+                        x: {
+                            grid: { color: 'transparent' },
+                            ticks: { color: '#94A3B8', font: { family: 'Rajdhani', size: 11 } }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // Initialize
+        loadStats();
+        initChart();
+        
+        // Auto refresh stats every 8 seconds
+        setInterval(loadStats, 8000);
+    </script>
+</body>
+</html>

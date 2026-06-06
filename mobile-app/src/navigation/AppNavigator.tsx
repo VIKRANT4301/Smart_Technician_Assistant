@@ -19,6 +19,8 @@ import SettingsScreen from '../screens/SettingsScreen';
 import KnowledgeScreen from '../screens/KnowledgeScreen';
 import NotificationScreen from '../screens/NotificationScreen';
 import ChatScreen from '../screens/ChatScreen';
+import DigitalTwinScreen from '../screens/DigitalTwinScreen';
+
 
 export type RootStackParamList = {
   Splash: undefined;
@@ -28,6 +30,7 @@ export type RootStackParamList = {
   VoiceQuery: { imageUri?: string } | undefined;
   Result: { analysisResult: any };
   Notifications: undefined;
+  DigitalTwin: { assetId: string };
 };
 
 export type TabParamList = {
@@ -213,6 +216,26 @@ const AppNavigator = () => {
           name="Notifications" 
           component={NotificationScreen} 
           options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DigitalTwin"
+          component={DigitalTwinScreen}
+          options={{
+            headerShown: true,
+            title: 'DIGITAL TWIN',
+            headerStyle: {
+              backgroundColor: activeTheme.card,
+              borderBottomWidth: 1,
+              borderBottomColor: activeTheme.border,
+            },
+            headerTintColor: activeTheme.primary,
+            headerTitleStyle: {
+              fontWeight: '900',
+              letterSpacing: 2,
+              fontSize: 13,
+              color: activeTheme.primary,
+            },
+          }}
         />
       </Stack.Navigator>
     </NavigationContainer>

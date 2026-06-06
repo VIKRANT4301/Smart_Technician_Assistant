@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+pydantic
+python-multipart
+google-generativeai
+gTTS
+numpy
+python-dotenv
+aiofiles
+Pillow
+supabase
+redis
+

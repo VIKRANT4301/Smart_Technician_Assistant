@@ -204,9 +204,11 @@ const KnowledgeScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   const handleIngestManual = async () => {
-    if (!productName.trim() || !manufacturer.trim() || !modelNumber.trim()) {
-      Alert.alert('Required Fields', 'Please fill in Product Name, Manufacturer, and Model Number.');
-      return;
+    if (ingestMethod !== 'url') {
+      if (!productName.trim() || !manufacturer.trim() || !modelNumber.trim()) {
+        Alert.alert('Required Fields', 'Please fill in Product Name, Manufacturer, and Model Number.');
+        return;
+      }
     }
 
     if (ingestMethod === 'text' && !manualText.trim()) {
@@ -229,9 +231,10 @@ const KnowledgeScreen: React.FC<Props> = ({ navigation }) => {
     setTerminalLines(['[0.00s] INITIALIZING CUSTOM MANUAL INGESTION PIPELINE...']);
     
     try {
+      let responseData: any = null;
       if (ingestMethod === 'text') {
         setTerminalLines(prev => [...prev, '[0.45s] SENDING TEXT PAYLOAD TO BACKEND FOR PARSING...']);
-        await uploadManualText({
+        responseData = await uploadManualText({
           product_name: productName.trim(),
           manufacturer: manufacturer.trim(),
           model_number: modelNumber.trim(),
@@ -241,17 +244,17 @@ const KnowledgeScreen: React.FC<Props> = ({ navigation }) => {
         });
       } else if (ingestMethod === 'url') {
         setTerminalLines(prev => [...prev, `[0.45s] REQUESTING CRAWLER ENGINE TO SCRAPE URL: ${manualUrl.trim()}...`]);
-        await uploadManualUrl({
-          product_name: productName.trim(),
-          manufacturer: manufacturer.trim(),
-          model_number: modelNumber.trim(),
+        responseData = await uploadManualUrl({
+          product_name: productName.trim() || undefined,
+          manufacturer: manufacturer.trim() || undefined,
+          model_number: modelNumber.trim() || undefined,
           description: description.trim(),
           url: manualUrl.trim(),
           category: 'manuals'
         });
       } else {
         setTerminalLines(prev => [...prev, `[0.45s] UPLOADING FILE ${selectedFileName} WITH PRODUCT METADATA...`]);
-        await uploadManualFile(
+        responseData = await uploadManualFile(
           selectedFileUri!,
           {
             product_name: productName.trim(),
@@ -270,8 +273,8 @@ const KnowledgeScreen: React.FC<Props> = ({ navigation }) => {
 
       setTerminalLines(prev => [...prev, '[2.60s] CUSTOM MANUAL FULLY INDEXED IN COGNITIVE VECTOR STORE!']);
 
-      const finalModelNumber = modelNumber.trim();
-      const finalProductName = productName.trim();
+      const finalModelNumber = modelNumber.trim() || responseData?.model_number || '';
+      const finalProductName = productName.trim() || responseData?.product_name || 'Dynamic Product';
 
       // Reset form
       setProductName('');
@@ -285,31 +288,25 @@ const KnowledgeScreen: React.FC<Props> = ({ navigation }) => {
       setDevicePhotoUri(null);
       setShowIngestManual(false);
 
-      if (diagnosticQuery.trim() || devicePhotoUri) {
-        const queryText = diagnosticQuery.trim()
-          ? `${finalModelNumber} - ${diagnosticQuery.trim()}`
-          : `${finalModelNumber} - Multimodal visual inspection`;
+      // Always run diagnosis after successful ingestion since the button says "INGEST & RUN DIAGNOSIS"
+      const queryText = diagnosticQuery.trim()
+        ? `${finalModelNumber} - ${diagnosticQuery.trim()}`
+        : `${finalModelNumber} - General troubleshooting and diagnostics`;
 
-        setTerminalLines(prev => [...prev, `[3.10s] AUTO-RUNNING TARGETED MULTIMODAL INFERENCE...`]);
-        await new Promise(resolve => setTimeout(resolve, 600));
-        
-        const diagnosticRes = await analyzeDiagnostic({ 
-          queryText, 
-          imageUri: devicePhotoUri 
-        });
-        if (diagnosticRes) {
-          setDiagnosticResult(diagnosticRes);
-          refreshHistory();
-          setDiagnosticQuery('');
-          setDevicePhotoUri(null);
-        } else {
-          Alert.alert('Diagnosis Failed', 'Upload succeeded but immediate diagnosis failed.');
-        }
+      setTerminalLines(prev => [...prev, `[3.10s] AUTO-RUNNING TARGETED MULTIMODAL INFERENCE...`]);
+      await new Promise(resolve => setTimeout(resolve, 600));
+      
+      const diagnosticRes = await analyzeDiagnostic({ 
+        queryText, 
+        imageUri: devicePhotoUri || undefined
+      });
+      if (diagnosticRes) {
+        setDiagnosticResult(diagnosticRes);
+        refreshHistory();
+        setDiagnosticQuery('');
+        setDevicePhotoUri(null);
       } else {
-        Alert.alert(
-          'Ingestion Complete',
-          `Successfully registered product ${finalProductName} (${finalModelNumber}) and indexed its manual. It is now active in the RAG knowledge base.`
-        );
+        Alert.alert('Diagnosis Failed', 'Upload succeeded but immediate diagnosis failed.');
       }
     } catch (e: any) {
       console.error(e);
