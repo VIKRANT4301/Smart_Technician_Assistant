@@ -1,4 +1,4 @@
-# Technical Architecture & Implementation Details: Apex Industrial AI
+# Technical Architecture & Implementation Details: Smart Technician Assistant
 
 This document provides a comprehensive technical breakdown of the **Apex Industrial AI Platform** (formerly Smart Technician Assistant). It details the system architecture, directory layouts, backend orchestration pipeline, hybrid RAG mechanics, database schemas, and edge/cloud scaling strategies.
 
