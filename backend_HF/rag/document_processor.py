@@ -123,8 +123,11 @@ class DocumentProcessor:
                         print(f"[RAG] Error reading file {file_name}: {e}")
                         
         if all_chunks:
-            vector_store.add_chunks(all_chunks)
-            print("[RAG] Knowledge base indexing complete!")
+            try:
+                vector_store.add_chunks(all_chunks)
+                print("[RAG] Knowledge base indexing complete!")
+            except Exception as e:
+                print(f"[RAG] Knowledge base indexing failed: {e}")
         else:
             print("[RAG] No document chunks found to index.")
 

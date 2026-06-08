@@ -11,6 +11,8 @@ import {
 } from 'lucide-react-native';
 import { useApp } from '../context/AppContext';
 import { Theme } from '../theme/theme';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from '../navigation/AppNavigator';
 import {
   getDigitalTwin, runWhatIfSimulation, getSimulationHistory,
   getRiskColor, getRiskBgColor,
@@ -121,8 +123,10 @@ const DegradationChart: React.FC<{ curve: number[]; color: string }> = ({ curve,
 };
 
 // ─── Main Screen ──────────────────────────────────────────────────────────────
+type DigitalTwinScreenRouteProp = RouteProp<RootStackParamList, 'DigitalTwin'>;
+
 interface Props {
-  route: { params: { assetId: string } };
+  route: DigitalTwinScreenRouteProp;
   navigation: any;
 }
 

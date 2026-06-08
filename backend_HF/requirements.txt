@@ -10,4 +10,5 @@ aiofiles
 Pillow
 supabase
 redis
-
+easyocr
+ultralytics

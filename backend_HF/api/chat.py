@@ -92,17 +92,18 @@ async def chat_assistant(req: ChatRequest):
 
                 payload = {
                     "model": "Qwen/Qwen2.5-14B-Instruct",
-                    "messages": hf_messages
+                    "messages": hf_messages,
+                    "temperature": 0.2
                 }
 
                 resp = query_hf_endpoint(config.HF_LLM_URL, payload, timeout=20.0)
                 if resp:
                     response_text = ""
                     if isinstance(resp, dict):
-                        if "choices" in resp:
-                            response_text = resp["choices"][0]["message"]["content"].strip()
-                        elif "generated_text" in resp:
-                            response_text = resp["generated_text"].strip()
+                        if "choices" in resp and resp["choices"] and "message" in resp["choices"][0] and resp["choices"][0]["message"].get("content") is not None:
+                            response_text = str(resp["choices"][0]["message"]["content"]).strip()
+                        elif "generated_text" in resp and resp["generated_text"] is not None:
+                            response_text = str(resp["generated_text"]).strip()
                         else:
                             response_text = json.dumps(resp)
                     elif isinstance(resp, str):

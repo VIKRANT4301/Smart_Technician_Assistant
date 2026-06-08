@@ -71,6 +71,7 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
   const [loadingProgress, setLoadingProgress] = useState(0);
 
   const [flash, setFlash] = useState(false);
+  const [zoom, setZoom] = useState(0);
   const [showHelp, setShowHelp] = useState(true);
   
   const cameraRef = useRef<any>(null);
@@ -78,6 +79,25 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
   const driftAnim = useRef(new Animated.ValueXY({ x: 0, y: 0 })).current;
   const rotateAnim = useRef(new Animated.Value(0)).current;
   const flashAnim = useRef(new Animated.Value(0.2)).current;
+
+  // Touch Swipe Gesture Detection
+  const touchStartX = useRef(0);
+  const handleTouchStart = (e: any) => {
+    touchStartX.current = e.nativeEvent.pageX;
+  };
+  const handleTouchEnd = (e: any) => {
+    const touchEndX = e.nativeEvent.pageX;
+    const dx = touchEndX - touchStartX.current;
+    if (Math.abs(dx) > 100) {
+      if (dx > 0) {
+        // Swiped Right -> Go to Chat tab
+        navigation.navigate('ChatTab' as any);
+      } else {
+        // Swiped Left -> Go to Knowledge tab
+        navigation.navigate('KnowledgeTab' as any);
+      }
+    }
+  };
 
   // Sound/Mic permissions setup
   useEffect(() => {
@@ -231,7 +251,6 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
-  // Voice recording control functions
   const startRecording = async () => {
     try {
       if (Platform.OS !== 'web') {
@@ -289,7 +308,6 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
     return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
   };
 
-  // Unified submit handler with simulated/timed multi-stage loading skeleton
   const handleAnalyzeDiagnostic = async () => {
     if (!selectedImage) {
       Alert.alert('Image Required', 'Please take or pick an image of the equipment first.');
@@ -302,7 +320,6 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
     const hasAudio = !!recordedUri;
     const hasManual = !!manualUrl.trim();
 
-    // Setup progressive visual stages
     const runStagesSim = async () => {
       if (hasAudio) {
         setLoadingStage('audio');
@@ -335,14 +352,12 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
     });
 
     try {
-      // Run the visual stage simulation and API request concurrently
       await Promise.all([runStagesSim(), apiPromise]);
       const result = await apiPromise;
 
       setLoadingProgress(100);
       await new Promise(r => setTimeout(r, 200));
 
-      // Reset local scan state
       setSelectedImage(null);
       setQueryText('');
       setManualUrl('');
@@ -361,26 +376,16 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <View style={[styles.container, { backgroundColor: activeTheme.background }]}>
-      <StatusBar barStyle="light-content" backgroundColor="#000" />
+    <View 
+      style={[styles.container, { backgroundColor: '#000' }]}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      <StatusBar barStyle="light-content" translucent backgroundColor="transparent" />
       
-      {/* 1. Header Bar */}
-      <View style={[styles.header, { backgroundColor: activeTheme.card, borderBottomColor: activeTheme.border }]}>
-        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.closeBtn}>
-          <X size={22} color={activeTheme.text} />
-        </TouchableOpacity>
-        <Text style={[styles.headerTitle, { color: activeTheme.text }]}>APEX Industrial AI Scanner</Text>
-        <TouchableOpacity 
-          style={[styles.flashBtn, flash && { backgroundColor: activeTheme.primary }]}
-          onPress={() => setFlash(!flash)}
-        >
-          <Zap size={16} color={flash ? '#000' : activeTheme.text} />
-        </TouchableOpacity>
-      </View>
-
       {/* 2. Onboarding Tooltip banner (shown on first view) */}
       {showHelp && !selectedImage && (
-        <View style={[styles.onboardingCard, { backgroundColor: 'rgba(0, 240, 255, 0.04)', borderColor: activeTheme.primary }]}>
+        <View style={[styles.onboardingCard, { backgroundColor: 'rgba(6, 11, 22, 0.85)', borderColor: activeTheme.primary, position: 'absolute', top: 60, left: 12, right: 12, zIndex: 10 }]}>
           <View style={styles.onboardingHeader}>
             <Info size={16} color={activeTheme.primary} style={{ marginRight: 6 }} />
             <Text style={[styles.onboardingTitle, { color: activeTheme.primary }]}>MULTIMODAL DIAGNOSTIC CONSOLE</Text>
@@ -388,7 +393,7 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
               <X size={14} color={activeTheme.muted} />
             </TouchableOpacity>
           </View>
-          <Text style={[styles.onboardingDesc, { color: activeTheme.text }]}>
+          <Text style={[styles.onboardingDesc, { color: '#FFF' }]}>
             How to use: Align the faulty machinery module in the targeting reticle and capture a photo. Then describe symptoms, paste manuals, or record voice symptom notes to produce precise, RAG-grounded troubleshooting guides.
           </Text>
         </View>
@@ -400,8 +405,31 @@ const CameraScreen: React.FC<Props> = ({ navigation }) => {
           <CameraView 
             style={StyleSheet.absoluteFillObject}
             ref={cameraRef}
+            zoom={zoom}
+            flash={flash ? 'on' : 'off'}
           />
           
+          {/* Floating Snapchat-style Header */}
+          <View style={styles.floatingHeader}>
+            <Text style={styles.floatingHeaderTitle}>APEX Industrial AI Scanner</Text>
+            <TouchableOpacity 
+              style={[styles.floatingFlashBtn, flash && { backgroundColor: activeTheme.primary }]}
+              onPress={() => setFlash(!flash)}
+            >
+              <Zap size={18} color={flash ? '#000' : '#FFF'} />
+            </TouchableOpacity>
+          </View>
+
+          {/* Floating Zoom Control */}
+          <TouchableOpacity 
+            style={[styles.floatingZoomBtn, { borderColor: activeTheme.primary }]}
+            onPress={() => setZoom(prev => prev === 0 ? 0.35 : 0)}
+          >
+            <Text style={[styles.floatingZoomText, { color: activeTheme.primary }]}>
+              {zoom === 0 ? '1X' : '2X'}
+            </Text>
+          </TouchableOpacity>
+
           {/* Target Grid and AI Detection boxes */}
           <View style={styles.overlay}>
             
@@ -662,30 +690,53 @@ const styles = StyleSheet.create({
   cancelLink: {
     padding: 8,
   },
-  header: {
+  floatingHeader: {
+    position: 'absolute',
+    top: 50,
+    left: 16,
+    right: 16,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    height: 56,
-    borderBottomWidth: 1,
+    zIndex: 10,
   },
-  closeBtn: {
-    padding: 6,
-  },
-  headerTitle: {
-    fontSize: 12,
+  floatingHeaderTitle: {
+    fontSize: 11,
     fontWeight: '900',
     letterSpacing: 2,
+    color: '#FFF',
     textTransform: 'uppercase',
+    textShadowColor: 'rgba(0, 0, 0, 0.8)',
+    textShadowOffset: { width: 0, height: 1 },
+    textShadowRadius: 3,
   },
-  flashBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+  floatingFlashBtn: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(255,255,255,0.06)',
+    backgroundColor: 'rgba(6, 11, 22, 0.7)',
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.15)',
+  },
+  floatingZoomBtn: {
+    position: 'absolute',
+    bottom: 115,
+    right: 24,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    borderWidth: 1.5,
+    backgroundColor: 'rgba(6, 11, 22, 0.75)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    zIndex: 10,
+  },
+  floatingZoomText: {
+    fontSize: 10,
+    fontWeight: '900',
+    letterSpacing: 0.5,
   },
   onboardingCard: {
     padding: 14,

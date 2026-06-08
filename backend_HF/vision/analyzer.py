@@ -334,25 +334,26 @@ class VisionAnalyzer:
                                 { "type": "image_url", "image_url": { "url": f"data:{mime_type};base64,{img_base64}" } }
                             ]
                         }
-                    ]
+                    ],
+                    "temperature": 0.2
                 }
 
                 resp = query_hf_endpoint(config.HF_VISION_URL, payload, timeout=25.0)
                 if resp:
                     text = ""
                     if isinstance(resp, dict):
-                        if "choices" in resp:
-                            text = resp["choices"][0]["message"]["content"].strip()
-                        elif "generated_text" in resp:
-                            text = resp["generated_text"].strip()
+                        if "choices" in resp and resp["choices"] and "message" in resp["choices"][0] and resp["choices"][0]["message"].get("content") is not None:
+                            text = str(resp["choices"][0]["message"]["content"]).strip()
+                        elif "generated_text" in resp and resp["generated_text"] is not None:
+                            text = str(resp["generated_text"]).strip()
                         else:
                             text = json.dumps(resp)
                     elif isinstance(resp, str):
                         text = resp.strip()
 
-                    if "```json" in text:
+                    if text and "```json" in text:
                         text = text.split("```json")[1].split("```")[0].strip()
-                    elif "```" in text:
+                    elif text and "```" in text:
                         text = text.split("```")[1].split("```")[0].strip()
 
                     result = json.loads(text)

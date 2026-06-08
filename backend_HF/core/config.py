@@ -22,13 +22,18 @@ class Config:
     OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "llama3")
 
     # Hugging Face Pro Configuration
-    HF_TOKEN = os.getenv("HF_TOKEN", "") or os.getenv("HF_API_KEY", "") or os.getenv("GEMINI_API_KEY", "")
+    HF_TOKEN = os.getenv("HF_TOKEN", "") or os.getenv("HF_API_KEY", "") or os.getenv("OPENROUTER_API_KEY", "") or os.getenv("GEMINI_API_KEY", "")
     HF_STT_URL = os.getenv("HF_STT_URL", "https://api-inference.huggingface.co/models/distil-whisper/distil-large-v3")
     HF_VISION_URL = os.getenv("HF_VISION_URL", "https://api-inference.huggingface.co/models/Qwen/Qwen2-VL-7B-Instruct")
     HF_EMBEDDING_URL = os.getenv("HF_EMBEDDING_URL", "https://api-inference.huggingface.co/models/BAAI/bge-m3")
     HF_RERANKER_URL = os.getenv("HF_RERANKER_URL", "https://api-inference.huggingface.co/models/BAAI/bge-reranker-v2-m3")
     HF_LLM_URL = os.getenv("HF_LLM_URL", "https://api-inference.huggingface.co/models/Qwen/Qwen2.5-72B-Instruct")
     HF_TTS_URL = os.getenv("HF_TTS_URL", "") # MeloTTS or Bark dedicated endpoint url (falls back to gTTS if empty)
+    # OpenRouter configuration to route to cheaper/more robust models
+    OPENROUTER_TEXT_MODEL = os.getenv("OPENROUTER_TEXT_MODEL", "google/gemini-2.5-flash")
+    OPENROUTER_VISION_MODEL = os.getenv("OPENROUTER_VISION_MODEL", "google/gemini-2.5-flash")
+    # Maximum tokens sent to the LLM — lower this to stay within credit budgets
+    MAX_LLM_TOKENS = int(os.getenv("MAX_LLM_TOKENS", "600"))
     DISABLE_MOCK_FALLBACK = os.getenv("DISABLE_MOCK_FALLBACK", "false").lower() in ("true", "1", "yes")
 
     @classmethod

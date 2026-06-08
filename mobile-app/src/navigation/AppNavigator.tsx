@@ -3,7 +3,7 @@ import { Pressable } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
-import { Home, History as HistoryIcon, Settings as SettingsIcon, BookOpen, Bell, MessageSquare, Sun, Moon } from 'lucide-react-native';
+import { Home, History as HistoryIcon, Settings as SettingsIcon, BookOpen, Bell, MessageSquare, Sun, Moon, Camera } from 'lucide-react-native';
 import { useApp } from '../context/AppContext';
 import { Theme } from '../theme/theme';
 
@@ -35,9 +35,9 @@ export type RootStackParamList = {
 
 export type TabParamList = {
   HomeTab: undefined;
-  KnowledgeTab: undefined;
   ChatTab: undefined;
-  HistoryTab: undefined;
+  CameraTab: undefined;
+  KnowledgeTab: undefined;
   SettingsTab: undefined;
 };
 
@@ -50,6 +50,7 @@ const TabNavigator = () => {
 
   return (
     <Tab.Navigator
+      initialRouteName="CameraTab"
       screenOptions={{
         headerShown: true,
         headerStyle: {
@@ -107,15 +108,6 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="KnowledgeTab"
-        component={KnowledgeScreen}
-        options={{
-          title: 'KNOWLEDGE REPOSITORY',
-          tabBarLabel: 'Knowledge',
-          tabBarIcon: ({ color, size }) => <BookOpen color={color} size={size} />,
-        }}
-      />
-      <Tab.Screen
         name="ChatTab"
         component={ChatScreen}
         options={{
@@ -125,12 +117,32 @@ const TabNavigator = () => {
         }}
       />
       <Tab.Screen
-        name="HistoryTab"
-        component={HistoryScreen}
+        name="CameraTab"
+        component={CameraScreen}
         options={{
-          title: 'MAINTENANCE CHRONOLOGY',
-          tabBarLabel: 'Logs',
-          tabBarIcon: ({ color, size }) => <HistoryIcon color={color} size={size} />,
+          headerShown: false,
+          title: 'APEX INDUSTRIAL SCANNER',
+          tabBarLabel: 'Scanner',
+          tabBarIcon: ({ color, size }) => <Camera color={color} size={size + 4} />,
+          tabBarStyle: {
+            backgroundColor: 'transparent',
+            position: 'absolute',
+            borderTopWidth: 0,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            elevation: 0,
+            height: 65,
+          }
+        }}
+      />
+      <Tab.Screen
+        name="KnowledgeTab"
+        component={KnowledgeScreen}
+        options={{
+          title: 'KNOWLEDGE REPOSITORY',
+          tabBarLabel: 'Knowledge',
+          tabBarIcon: ({ color, size }) => <BookOpen color={color} size={size} />,
         }}
       />
       <Tab.Screen
