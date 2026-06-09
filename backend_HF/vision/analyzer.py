@@ -1,6 +1,6 @@
 import os
 import json
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Optional
 from PIL import Image, ImageDraw, ImageFont
 from backend_HF.core.config import config
 from backend_HF.utils.hf_client import query_hf_endpoint
